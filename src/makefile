@@ -1,5 +1,10 @@
-DEP = db_create.c db.c main.c movie_entry.c
-DEPO = db_create.o db.o main.o movie_entry.o
+CC = gcc
+CFLAGS = -g -Wall -pedantic
+DEP = db.c main.c db_create.c movie_entry.c
+DEPO =  db.o main.o db_create.o movie_entry.o
 
-make: $(DEP)
-	gcc -o main $(DEP) -I.
+program: $(DEPO)
+	$(CC) $(CFLAGS) -o program $(DEPO) 
+
+clean:
+	rm *.o

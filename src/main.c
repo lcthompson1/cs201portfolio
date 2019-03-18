@@ -1,8 +1,12 @@
-#include <movie_entry.h>
-#include <movie_entry.c>
-#include <db_create.h>
-#include <db_create.c>
-#include <db.h>
-#include <db.c>
+#include "movie_entry.h"
+#include "db_create.h"
+#include "db.h"
+#include <stdio.h>
 
 
+
+int main()
+{
+	printf("Testing Make File");
+	return 1;
+}
