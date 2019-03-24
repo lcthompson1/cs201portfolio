@@ -7,4 +7,5 @@ program: $(DEPO)
 	$(CC) $(CFLAGS) -o program $(DEPO) 
 
 clean:
+	rm program
 	rm *.o

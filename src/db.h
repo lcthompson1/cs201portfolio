@@ -2,36 +2,43 @@
 #define DB_H_
 #include <stdlib.h>
 
+#define BLACK 1
+#define RED 0
+
+typedef struct _Node node;
+typedef struct _Tree tree;
+
 //Node structure for red black tree.
 //Red = 0
 //Black = 1
-struct node
+typedef struct _Node
 {
 	int key;
 //	MovieEntry *key;
-	struct node *left, *right, *p;
+	node *left, *right, *p;
 	int color;
-};
+}node;
 
 //RB Tree structure containing pointers for root and nil
-struct tree
+typedef struct _Tree
 {
-	struct node *root;
-	struct node *nil;
-};
+	node *root;
+	node *nil;
+}tree;
 
 
 
 
-struct node * newNode(int key);
-struct tree newTree();
-void left_rotate(struct tree Tree, struct node *x);
-void right_rotate(struct tree Tree, struct node *x);
-void insert(struct tree Tree, struct node *z);
-void insert_fixup(struct tree Tree, struct node *z);
-void rb_transplant(struct tree Tree, struct node *u, struct node *v);
-struct node * tree_minimum(struct node *x);
-void rb_delete_fixup(struct tree Tree, struct node *x);
-
+node * newNode(int key);
+tree * newTree();
+void left_rotate(tree *Tree, node *x);
+void right_rotate( tree *Tree,  node *x);
+void insert( tree *Tree,  node *z);
+void insert_fixup( tree *Tree,  node *z);
+void rb_transplant( tree *Tree,  node *u,  node *v);
+ node * tree_minimum( node *x);
+void rb_delete_fixup( tree *Tree,  node *x);
+void inOrder(tree *Tree);
+void inOrderAux(node *x);
 
 #endif
