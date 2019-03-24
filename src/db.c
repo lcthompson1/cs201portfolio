@@ -1,5 +1,20 @@
 #include "db.h"
 #include <stdio.h>
+#include <stdlib.h>
+
+struct node * newNode(int key)
+{
+	struct node *x = malloc(sizeof(struct node));
+
+	x->key = key;
+	x->p = NULL;
+	x->left = NULL;
+	x->right = NULL;
+	x->color = 0;
+
+	return x;
+}
+
 
 void left_rotate(struct tree Tree, struct node *x)
 {
@@ -187,7 +202,7 @@ void rb_transplant(struct tree Tree, struct node *u, struct node *v)
 	v->p = u->p;
 }
 
-
+/*
 void rb_delete(struct tree Tree, struct node *z)
 {
 	struct node *y = z;
@@ -244,5 +259,5 @@ void rb_delete_fixup(struct tree Tree, struct node *x)
 {
 
 }
-
+*/
 
