@@ -15,6 +15,14 @@ struct node * newNode(int key)
 	return x;
 }
 
+struct tree newTree()
+{
+	struct tree x;
+	x.nil = newNode(0);
+	x.root = NULL;
+	return x;
+}
+
 
 void left_rotate(struct tree Tree, struct node *x)
 {

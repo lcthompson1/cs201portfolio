@@ -24,6 +24,7 @@ struct tree
 
 
 struct node * newNode(int key);
+struct tree newTree();
 void left_rotate(struct tree Tree, struct node *x);
 void right_rotate(struct tree Tree, struct node *x);
 void insert(struct tree Tree, struct node *z);
