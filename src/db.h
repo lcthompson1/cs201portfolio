@@ -31,14 +31,16 @@ typedef struct _Tree
 
 node * newNode(int key);
 tree * newTree();
-void left_rotate(tree *Tree, node *x);
-void right_rotate( tree *Tree,  node *x);
+void leftRotate(tree *Tree, node *x);
+void rightRotate( tree *Tree,  node *x);
 void insert( tree *Tree,  node *z);
-void insert_fixup( tree *Tree,  node *z);
-void rb_transplant( tree *Tree,  node *u,  node *v);
- node * tree_minimum( node *x);
-void rb_delete_fixup( tree *Tree,  node *x);
+void insertFixup( tree *Tree,  node *z);
+void rbTransplant( tree *Tree,  node *u,  node *v);
+node * treeMinimum(tree *Tree, node *x);
+void rbDelete(tree *Tree, node *z);
+void rbDeleteFixup( tree *Tree,  node *x);
 void inOrder(tree *Tree);
 void inOrderAux(tree *Tree, node *x);
+node * search(tree *Tree, node *x, int key);
 
 #endif

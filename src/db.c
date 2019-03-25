@@ -18,7 +18,6 @@ tree * newTree()
 {
 	tree *x = malloc(sizeof(tree));
 	node *sentinel = malloc(sizeof(node));
-	sentinel->key = (int)NULL;
 	sentinel->p = sentinel;
 	sentinel->left = sentinel;
 	sentinel->right = sentinel;
@@ -30,7 +29,7 @@ tree * newTree()
 }
 
 
-void left_rotate(tree *Tree, node *x)
+void leftRotate(tree *Tree, node *x)
 {
 	node *y = x->right;
 
@@ -63,7 +62,7 @@ void left_rotate(tree *Tree, node *x)
 
 
 
-void right_rotate(tree *Tree, node *x)
+void rightRotate(tree *Tree, node *x)
 {
 	node *y;
 	y = x->left;
@@ -118,17 +117,14 @@ void insert(tree *Tree, node *z)
 
 	z->p = y;
 
-	//This case works
 	if(y == Tree->nil)
 	{
 		Tree->root = z;
 	}
-	//This case works
 	else if(z->key < y->key)
 	{
 		y->left = z;
 	}
-	//This case works
 	else
 	{
 		y->right = z;
@@ -137,12 +133,11 @@ void insert(tree *Tree, node *z)
 	z->left = Tree->nil;
 	z->right = Tree->nil;
 	z->color = RED;
-//	inOrder(Tree);
-	insert_fixup(Tree, z);
+	insertFixup(Tree, z);
 }
 
 
-void insert_fixup(tree *Tree, node *z)
+void insertFixup(tree *Tree, node *z)
 {
 	node *y;
 
@@ -151,7 +146,6 @@ void insert_fixup(tree *Tree, node *z)
 		if(z->p == z->p->p->left)
 		{
 			y = z->p->p->right;
-//			inOrder(Tree);
 
 			if(y->color == RED)
 			{
@@ -159,25 +153,17 @@ void insert_fixup(tree *Tree, node *z)
 				y->color = BLACK;
 				z->p->p->color = RED;
 				z = z->p->p;
-//				inOrder(Tree);
 			}
 			else if(z == z->p->right)
 			{
 				z = z->p;
-				left_rotate(Tree,z);
+				leftRotate(Tree,z);
 			}
 			else
 			{
-/*
-			printf("Root:%d  Nil:%d   ",Tree->root, Tree->nil);
-			printf("z:%d   z color:%d   ",z,z->color);
-			printf("z->p:%d   z->p color:%d   ",z->p,z->p->color);
-//			printf("z->p->p:%d  z->p->p->color:%d\n",z->p->p,z->p->p->color);
-			printf("z->p->p:%d",z->p->p);
-*/
 				z->p->color = BLACK;
 				z->p->p->color = RED;
-				right_rotate(Tree,z->p->p);
+				rightRotate(Tree,z->p->p);
 			}
 		}
 		else
@@ -194,13 +180,13 @@ void insert_fixup(tree *Tree, node *z)
 			else if(z == z->p->left)
 			{
 				z = z->p;
-				right_rotate(Tree,z);
+				rightRotate(Tree,z);
 			}
 			else
 			{
 				z->p->color = BLACK;
 				z->p->p->color = RED;
-				left_rotate(Tree,z->p->p);
+				leftRotate(Tree,z->p->p);
 			}
 		}
 
@@ -210,7 +196,7 @@ void insert_fixup(tree *Tree, node *z)
 
 }
 
-void rb_transplant(tree *Tree, node *u, node *v)
+void rbTransplant(tree *Tree, node *u, node *v)
 {
 	if(u->p == Tree->nil)
 	{
@@ -228,28 +214,28 @@ void rb_transplant(tree *Tree, node *u, node *v)
 	v->p = u->p;
 }
 
-/*
-void rb_delete(struct tree Tree, struct node *z)
-{
-	struct node *y = z;
-	struct node *x;
 
-	int yColor = y->color;
+void rbDelete(tree *Tree, node *z)
+{
+	node *y = z;
+	node *x;
+
+	int yOrigColor = y->color;
 
 	if(z->left == Tree->nil)
 	{
 		x = z->right;
-		rb_transplant(Tree, z, z->right);
+		rbTransplant(Tree, z, z->right);
 	}
 	else if(z->right == Tree->nil)
 	{
 		x = z->left;
-		rb_transplant(Tree, z, z->left);
+		rbTransplant(Tree, z, z->left);
 	}
 	else
 	{
-		y = tree_minimum(z->right);
-		yColor = y->color;
+		y = treeMinimum(Tree, z->right);
+		yOrigColor = y->color;
 		x = y->right;
 
 		if(y->p == z)
@@ -258,39 +244,125 @@ void rb_delete(struct tree Tree, struct node *z)
 		}
 		else
 		{
-			rb_transplant(Tree, y, y->right);
+			rbTransplant(Tree, y, y->right);
 			y->right = z->right;
 			y->right->p = y;
 		}
 
-		rb_transplant(Tree, z, y);
+		rbTransplant(Tree, z, y);
 		y->left = z->left;
 		y->left->p = y;
 		y->color = z->color;
 	}
 
-	if(yColor == 1);
+	if(yOrigColor == BLACK)
 	{
-		rb_delete_fixup(Tree, x);
+		rbDeleteFixup(Tree, x);
 	}
 }
 
 
 
-struct node * tree_minimum(struct node *x)
+node * treeMinimum(tree *Tree, node *x)
 {
+	node *current = x;
 
+	while(current->left != Tree->nil)
+	{
+		current = current->left;
+	}
+
+	return current;
 }
-void rb_delete_fixup(struct tree Tree, struct node *x)
+
+void rbDeleteFixup(tree *Tree, node *x)
 {
-
+	while(x != x->p->left)
+	{
+		if(x == x->p->left)
+		{
+			node *w = x->p->right;
+			if(w->color == RED)
+			{
+				w->color = BLACK;
+				x->p->color = RED;
+				leftRotate(Tree, x->p);
+				w = x->p->right;
+			}
+			if((w->left->color == BLACK) & (w->right->color == BLACK))
+			{
+				w->color = RED;
+				x = x->p;
+			}
+			else if(w->right->color == BLACK)
+			{
+				w->left->color = BLACK;
+				w->color = RED;
+				rightRotate(Tree,w);
+				w = x->p->right;
+			}
+			else
+			{
+				w->color = x->p->color;
+				x->p->color = BLACK;
+				w->right->color = BLACK;
+				leftRotate(Tree,x->p);
+				x = Tree->root;
+			}
+		}
+		else
+		{
+			node *w = x->p->left;
+			if(w->color == RED)
+			{
+				w->color = BLACK;
+				x->p->color = RED;
+				rightRotate(Tree, x->p);
+				w = x->p->left;
+			}
+			if((w->right->color == BLACK) & (w->left->color == BLACK))
+			{
+				w->color = RED;
+				x = x->p;
+			}
+			else if(w->left->color == BLACK)
+			{
+				w->right->color = BLACK;
+				w->color = RED;
+				leftRotate(Tree,w);
+				w = x->p->left;
+			}
+			else
+			{
+				w->color = x->p->color;
+				x->p->color = BLACK;
+				w->left->color = BLACK;
+				rightRotate(Tree,x->p);
+				x = Tree->root;
+			}
+		}
+	}
+	x->color = BLACK;
 }
-*/
 
+node * search(tree *Tree, node *x, int key)
+{
+	if((x == Tree->nil) | (key == x->key))
+	{
+		return x;
+	}
+	if(key < x->key)
+	{
+		return search(Tree,x->left,key);
+	}
+	else
+	{
+		return search(Tree,x->right,key);
+	}
+}
 
 void inOrder(tree *Tree)
 {
-//	printf("Root:%d\n",Tree->root);
 	inOrderAux(Tree, Tree->root);
 	printf("\n");
 }
@@ -301,12 +373,6 @@ void inOrderAux(tree *Tree, node *x)
 		return;
 
 	inOrderAux(Tree, x->left);
-	printf("(key:%d color:%d parent:%d left:%d right:%d)\n",x->key,x->color,x->p->key,x->left->key,x->right->key);
-	//	printf("Key:%d  Color:%d  location:%d  parent loc:%d  left loc:%d  right loc:%d\n",x->key, x->color, x, x->p, x->left, x->right);
+	printf("%d ",x->key);
 	inOrderAux(Tree, x->right);
 }
-
-
-
-
-
