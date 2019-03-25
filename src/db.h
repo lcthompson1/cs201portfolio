@@ -39,6 +39,6 @@ void rb_transplant( tree *Tree,  node *u,  node *v);
  node * tree_minimum( node *x);
 void rb_delete_fixup( tree *Tree,  node *x);
 void inOrder(tree *Tree);
-void inOrderAux(node *x);
+void inOrderAux(tree *Tree, node *x);
 
 #endif

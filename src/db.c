@@ -4,7 +4,6 @@
 
 node * newNode(int key)
 {
-	printf("6\n");
 	node *x = malloc(sizeof(node));
 
 	x->key = key;
@@ -12,30 +11,28 @@ node * newNode(int key)
 	x->left = NULL;
 	x->right = NULL;
 	x->color = RED;
-	printf("7\n");
 	return x;
 }
 
 tree * newTree()
 {
-	printf("1\n");
-	tree *x;
-	printf("2\n");
-	x->nil = newNode(0);
-	printf("3\n");
-	x->nil->color = BLACK;
-	printf("4\n");
+	tree *x = malloc(sizeof(tree));
+	node *sentinel = malloc(sizeof(node));
+	sentinel->key = (int)NULL;
+	sentinel->p = sentinel;
+	sentinel->left = sentinel;
+	sentinel->right = sentinel;
+	sentinel->color = BLACK;
+
+	x->nil = sentinel;
 	x->root = x->nil;
-	printf("5\n");
 	return x;
 }
 
 
 void left_rotate(tree *Tree, node *x)
 {
-	printf("LR\n");
-	node *y;
-	y = x->right;
+	node *y = x->right;
 
 	x->right = y->left;
 
@@ -68,7 +65,6 @@ void left_rotate(tree *Tree, node *x)
 
 void right_rotate(tree *Tree, node *x)
 {
-	printf("RR\n");
 	node *y;
 	y = x->left;
 
@@ -103,15 +99,11 @@ void right_rotate(tree *Tree, node *x)
 
 void insert(tree *Tree, node *z)
 {
-	printf("Insert Start\n");
-
 	node *y = Tree->nil;
 	node *x = Tree->root;
 
 	while( x != Tree->nil)
 	{
-		printf("Loop 1: x=%d    y=%d\n",x,y);
-		printf("Loop 1\n");
 		y = x;
 
 		if(z->key < x->key)
@@ -124,79 +116,76 @@ void insert(tree *Tree, node *z)
 		}
 	}
 
-	printf("End: x=%d    y=%d\n",x,y);
 	z->p = y;
 
+	//This case works
 	if(y == Tree->nil)
 	{
-		printf("1 Before  root:%d    y:%d\n",Tree->root,y);
 		Tree->root = z;
-		printf("1 After  root:%d    y:%d\n",Tree->root,y);
 	}
+	//This case works
 	else if(z->key < y->key)
 	{
-		printf("2\n");
 		y->left = z;
 	}
+	//This case works
 	else
 	{
-		printf("3\n");
 		y->right = z;
 	}
 
-	printf("End\n");
 	z->left = Tree->nil;
 	z->right = Tree->nil;
 	z->color = RED;
-
-	printf("End: z=%d  zKey=%d  root=%d  root->left:%d   root->right:%d  nil=%d\n",z,z->key,Tree->root,Tree->root->left,Tree->root->right,Tree->nil);
-
-	printf("End of insert  root:%d    y:%d\n",Tree->root,y);
+//	inOrder(Tree);
 	insert_fixup(Tree, z);
 }
 
 
 void insert_fixup(tree *Tree, node *z)
 {
-	printf("Insert Fixup\n");
 	node *y;
 
-	printf("z->p->color: %d\n",z->p->color);
 	while(z->p->color == RED)
 	{
-		printf("Step 1\n");
 		if(z->p == z->p->p->left)
 		{
-			printf("Step 2\n");
 			y = z->p->p->right;
+//			inOrder(Tree);
 
 			if(y->color == RED)
 			{
-				printf("Step 3\n");
 				z->p->color = BLACK;
 				y->color = BLACK;
 				z->p->p->color = RED;
 				z = z->p->p;
+//				inOrder(Tree);
 			}
 			else if(z == z->p->right)
 			{
-				printf("Step 4\n");
 				z = z->p;
 				left_rotate(Tree,z);
 			}
-
-			z->p->color = BLACK;
-			z->p->p->color = RED;
-			right_rotate(Tree,z->p->p);
+			else
+			{
+/*
+			printf("Root:%d  Nil:%d   ",Tree->root, Tree->nil);
+			printf("z:%d   z color:%d   ",z,z->color);
+			printf("z->p:%d   z->p color:%d   ",z->p,z->p->color);
+//			printf("z->p->p:%d  z->p->p->color:%d\n",z->p->p,z->p->p->color);
+			printf("z->p->p:%d",z->p->p);
+*/
+				z->p->color = BLACK;
+				z->p->p->color = RED;
+				right_rotate(Tree,z->p->p);
+			}
 		}
 		else
 		{
-			printf("Step 5\n");
 			y = z->p->p->left;
 
 			if(y->color == RED)
 			{
-				printf("Step 6\n");
 				z->p->color = BLACK;
 				y->color = BLACK;
 				z->p->p->color = RED;
@@ -204,22 +193,21 @@ void insert_fixup(tree *Tree, node *z)
 			}
 			else if(z == z->p->left)
 			{
-				printf("Step 7\n");
 				z = z->p;
 				right_rotate(Tree,z);
 			}
-
-			z->p->color = BLACK;
-			z->p->p->color = RED;
-			left_rotate(Tree,z->p->p);
+			else
+			{
+				z->p->color = BLACK;
+				z->p->p->color = RED;
+				left_rotate(Tree,z->p->p);
+			}
 		}
 
 	}
 
-	printf("Step 8\n");
 	Tree->root->color = BLACK;
 
-	printf("End of fixup  root:%d    z:%d\n",Tree->root,z);
 }
 
 void rb_transplant(tree *Tree, node *u, node *v)
@@ -302,18 +290,20 @@ void rb_delete_fixup(struct tree Tree, struct node *x)
 
 void inOrder(tree *Tree)
 {
-	inOrderAux(Tree->root);
+//	printf("Root:%d\n",Tree->root);
+	inOrderAux(Tree, Tree->root);
 	printf("\n");
 }
 
-void inOrderAux(node *x)
+void inOrderAux(tree *Tree, node *x)
 {
-	if(x == NULL)
+	if(x == Tree->nil)
 		return;
 
-	inOrderAux(x->left);
-	printf("%d ",x->key);
-	inOrderAux(x->right);
+	inOrderAux(Tree, x->left);
+	printf("(key:%d color:%d parent:%d left:%d right:%d)\n",x->key,x->color,x->p->key,x->left->key,x->right->key);
+	//	printf("Key:%d  Color:%d  location:%d  parent loc:%d  left loc:%d  right loc:%d\n",x->key, x->color, x, x->p, x->left, x->right);
+	inOrderAux(Tree, x->right);
 }
 
 
