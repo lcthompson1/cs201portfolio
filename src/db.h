@@ -11,12 +11,9 @@ typedef struct _Node node;
 typedef struct _Tree tree;
 
 //Node structure for red black tree.
-//Red = 0
-//Black = 1
 typedef struct _Node
 {
-	MovieEntry *key;
-//	MovieEntry *key;
+	void *key;
 	node *left, *right, *p;
 	int color;
 }node;
@@ -28,10 +25,7 @@ typedef struct _Tree
 	node *nil;
 }tree;
 
-
-
-
-node * newNode(MovieEntry *key);
+node * newNode(void *key);
 tree * newTree();
 void leftRotate(tree *Tree, node *x);
 void rightRotate( tree *Tree,  node *x);

@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "movie_entry.h"
+#include "movie_log.h"
 
-MovieEntry * newMovieEntry(char *tc, char *tt, char *pt, char *ot, int ia, int sy, int ey, int rm, char *g)
+MovieLog * newMovieLog(char *tc, char *tt, char *pt, char *ot, int ia, int sy, int ey, int rm, char *g)
 {
-	MovieEntry *x = malloc(sizeof(MovieEntry));
+	MovieLog *x = malloc(sizeof(MovieLog));
 
 	x->tconst = strdup(tc);
 	x->titleType = strdup(tt);
@@ -20,9 +20,9 @@ MovieEntry * newMovieEntry(char *tc, char *tt, char *pt, char *ot, int ia, int s
 	return x;
 }
 
-MovieEntry * newMovieEntrySearch(char *title)
+MovieLog * newMovieLogSearch(char *title)
 {
-	MovieEntry *x = malloc(sizeof(MovieEntry));
+	MovieLog *x = malloc(sizeof(MovieLog));
 
 	x->tconst = "";
 	x->titleType = "";
@@ -37,7 +37,7 @@ MovieEntry * newMovieEntrySearch(char *title)
 	return x;
 }
 
-int titleLessThan(MovieEntry *x, MovieEntry *y)
+int titleLessThan(MovieLog *x, MovieLog *y)
 {
 	if(strcmp(x->primaryTitle, y->primaryTitle) < 0)
 	{
@@ -49,7 +49,7 @@ int titleLessThan(MovieEntry *x, MovieEntry *y)
 	}
 }
 
-int titleGreaterThan(MovieEntry *x, MovieEntry *y)
+int titleGreaterThan(MovieLog *x, MovieLog *y)
 {
 	if(strcmp(x->primaryTitle, y->primaryTitle) > 0)
 	{
@@ -61,7 +61,7 @@ int titleGreaterThan(MovieEntry *x, MovieEntry *y)
 	}
 }
 
-int titleEqualTo(MovieEntry *x, MovieEntry *y)
+int titleEqualTo(MovieLog *x, MovieLog *y)
 {
 	if(strcmp(x->primaryTitle, y->primaryTitle) == 0)
 	{
@@ -73,71 +73,71 @@ int titleEqualTo(MovieEntry *x, MovieEntry *y)
 	}
 }
 
-void printTconst(MovieEntry *x)
+void printTconst(MovieLog *x)
 {
 	printf("%s",x->tconst);
 }
 
-void printTitleType(MovieEntry *x)
+void printTitleType(MovieLog *x)
 {
 	printf("%s",x->titleType);
 }
 
-void printPrimaryTitle(MovieEntry *x)
+void printPrimaryTitle(MovieLog *x)
 {
 	printf("%s",x->primaryTitle);
 }
 
-void printOriginalTitle(MovieEntry *x)
+void printOriginalTitle(MovieLog *x)
 {
 	printf("%s",x->originalTitle);
 }
 
-void printIsAdult(MovieEntry *x)
+void printIsAdult(MovieLog *x)
 {
 	printf("%d",x->isAdult);
 }
 
-void printStartYear(MovieEntry *x)
+void printStartYear(MovieLog *x)
 {
-	printf("%d",x->startYear);
+	printf("%s",x->tconst);
 }
 
-void printEndYear(MovieEntry *x)
+void printEndYear(MovieLog *x)
 {
 	printf("%d",x->endYear);
 }
 
-void printRuntimeMinutes(MovieEntry *x)
+void printRuntimeMinutes(MovieLog *x)
 {
 	printf("%d",x->runtimeMinutes);
 }
 
-void printGenres(MovieEntry *x)
+void printGenres(MovieLog *x)
 {
 	printf("%s",x->genres);
 }
 
-void printMovieEntry(MovieEntry *x)
+void printMovieLog(MovieLog *x)
 {
 
 
 	printTconst(x);
-	printf("  ");
+	printf("     ");
 	printTitleType(x);
-	printf("  ");
+	printf("     ");
 	printPrimaryTitle(x);
-	printf("  ");
+	printf("     ");
 	printOriginalTitle(x);
-	printf("  ");
+	printf("     ");
 	printIsAdult(x);
-	printf("  ");
+	printf("     ");
 	printStartYear(x);
-	printf("  ");
+	printf("     ");
 	printEndYear(x);
-	printf("  ");
+	printf("     ");
 	printRuntimeMinutes(x);
-	printf("  ");
+	printf("     ");
 	printGenres(x);
 	printf("\n");
 }

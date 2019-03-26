@@ -19,7 +19,7 @@ typedef struct _MovieEntry
 	char *genres;
 }MovieEntry;
 
-MovieEntry * newMovieEntry(char tc[], char tt[], char pt[], char ot[], int ia, int sy, int ey, int rm, char g[]);
+MovieEntry * newMovieEntry(char *tc, char *tt, char *pt, char *ot, int ia, int sy, int ey, int rm, char *g);
 MovieEntry * newMovieEntrySearch(char *title);
 int titleLessThan(MovieEntry *x, MovieEntry *y);
 int titleGreaterThan(MovieEntry *x, MovieEntry *y);

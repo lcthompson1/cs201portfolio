@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-node * newNode(MovieEntry *key)
+node * newNode(void *key)
 {
 	node *x = malloc(sizeof(node));
 
