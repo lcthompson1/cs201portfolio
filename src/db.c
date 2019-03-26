@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-node * newNode(int key)
+node * newNode(MovieEntry *key)
 {
 	node *x = malloc(sizeof(node));
 
@@ -105,7 +105,7 @@ void insert(tree *Tree, node *z)
 	{
 		y = x;
 
-		if(z->key < x->key)
+		if(titleLessThan(z->key ,x->key))
 		{
 			x = x->left;
 		}
@@ -121,7 +121,7 @@ void insert(tree *Tree, node *z)
 	{
 		Tree->root = z;
 	}
-	else if(z->key < y->key)
+	else if(titleLessThan(z->key ,y->key))
 	{
 		y->left = z;
 	}
@@ -345,13 +345,13 @@ void rbDeleteFixup(tree *Tree, node *x)
 	x->color = BLACK;
 }
 
-node * search(tree *Tree, node *x, int key)
+node * search(tree *Tree, node *x, MovieEntry *key)
 {
-	if((x == Tree->nil) | (key == x->key))
+	if((x == Tree->nil) | (titleEqualTo(key, x->key)))
 	{
 		return x;
 	}
-	if(key < x->key)
+	if(titleLessThan(key ,x->key))
 	{
 		return search(Tree,x->left,key);
 	}
@@ -373,6 +373,7 @@ void inOrderAux(tree *Tree, node *x)
 		return;
 
 	inOrderAux(Tree, x->left);
-	printf("%d ",x->key);
+	printMovieEntry(x->key);
+	printf("\n");
 	inOrderAux(Tree, x->right);
 }

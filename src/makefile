@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall -pedantic
-DEP = db.c main.c db_create.c movie_entry.c
-DEPO =  db.o main.o db_create.o movie_entry.o
+DEP = movie_entry.c db.c db_create.c  main.c 
+DEPO = movie_entry.o db.o db_create.o  main.o 
 
 program: $(DEPO)
 	$(CC) $(CFLAGS) -o program $(DEPO) 

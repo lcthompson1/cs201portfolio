@@ -1,6 +1,8 @@
 #ifndef DB_H_
 #define DB_H_
+#include "movie_entry.h"
 #include <stdlib.h>
+
 
 #define BLACK 1
 #define RED 0
@@ -13,7 +15,7 @@ typedef struct _Tree tree;
 //Black = 1
 typedef struct _Node
 {
-	int key;
+	MovieEntry *key;
 //	MovieEntry *key;
 	node *left, *right, *p;
 	int color;
@@ -29,7 +31,7 @@ typedef struct _Tree
 
 
 
-node * newNode(int key);
+node * newNode(MovieEntry *key);
 tree * newTree();
 void leftRotate(tree *Tree, node *x);
 void rightRotate( tree *Tree,  node *x);
@@ -41,6 +43,6 @@ void rbDelete(tree *Tree, node *z);
 void rbDeleteFixup( tree *Tree,  node *x);
 void inOrder(tree *Tree);
 void inOrderAux(tree *Tree, node *x);
-node * search(tree *Tree, node *x, int key);
+node * search(tree *Tree, node *x, MovieEntry *key);
 
 #endif
