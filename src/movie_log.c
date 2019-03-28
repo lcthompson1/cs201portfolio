@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <ncurses.h>
 #include "movie_log.h"
 
-MovieLog * newMovieLog(MovieEntry *orig)
+MovieLog * newMovieLog(MovieEntry *orig, char *date)
 {
 	MovieLog *x = malloc(sizeof(MovieLog));
 
@@ -15,11 +16,29 @@ MovieLog * newMovieLog(MovieEntry *orig)
 	x->dvd = 0;
 	x->bluray = 0;
 	x->digital = 0;
-	x->date = "";
+	x->date = date;
 
 
 	return x;
 }
+/*
+MovieLog * newMovieLogNoDate(MovieEntry *orig)
+{
+	MovieLog *x = malloc(sizeof(MovieLog));
+
+	x->title = strdup(orig->primaryTitle);
+	x->releaseYear = orig->startYear;
+	x->runtime = orig->runtimeMinutes;
+	x->genres = strdup(orig->genres);
+	x->dvd = 0;
+	x->bluray = 0;
+	x->digital = 0;
+//	x->date = date;
+
+
+	return x;
+}
+*/
 
 MovieLog * newMovieLogFile(char *title, int releaseYear, int runtime, char *genres, int dvd, int bluray, int digital, char *date)
 {
@@ -95,6 +114,13 @@ void printMovieLog(void *x, void *outSel)
 	fprintf((FILE*)(outSel),"%s\t%d\t%d\t%s\t%d\t%d\t%d\t%s\n",((MovieLog*)x)->title,((MovieLog*)x)->releaseYear,((MovieLog*)x)->runtime,((MovieLog*)x)->genres,((MovieLog*)x)->dvd,((MovieLog*)x)->bluray,((MovieLog*)x)->digital,((MovieLog*)x)->date);
 }
 
+void printMovieLogScreen(void *x)
+{
+	printw("%s\t%d\t%d\t%s\t%d\t%d\t%d\t%s\n",((MovieLog*)x)->title,((MovieLog*)x)->releaseYear,((MovieLog*)x)->runtime,((MovieLog*)x)->genres,((MovieLog*)x)->dvd,((MovieLog*)x)->bluray,((MovieLog*)x)->digital,((MovieLog*)x)->date);
+	refresh();
+}
+
+
 void addDvd(MovieLog *x)
 {
 	x->dvd = 1;
@@ -123,6 +149,11 @@ void removeBluray(MovieLog *x)
 void removeDigital(MovieLog *x)
 {
 	x->digital = 0;
+}
+
+void changeDate(MovieLog *x, char *date)
+{
+	x->date = strdup(date);
 }
 
 int begLogMatch(void *x, void *y)

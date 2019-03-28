@@ -14,7 +14,7 @@ node * newNode(void *key)
 	return x;
 }
 
-tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, void *outSel), int (*titleLessThan)(void *a, void *b), int (*titleGreaterThan)(void *a, void *b))
+tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, void *outSel), int (*titleLessThan)(void *a, void *b), int (*titleGreaterThan)(void *a, void *b), void (*printScreen)(void *entry))
 {
 	tree *x = malloc(sizeof(tree));
 	node *sentinel = malloc(sizeof(node));
@@ -27,6 +27,7 @@ tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, voi
 	x->root = x->nil;
 	x->begMatch = begMatch;
 	x->print = print;
+	x->printScreen = printScreen;
 	x->titleGreaterThan = titleGreaterThan;
 	x->titleLessThan = titleLessThan;
 	return x;
@@ -383,7 +384,7 @@ void search(tree *Tree, node *x, void *key)
 
 tree * search(tree *Tree, void *key)
 {
-	tree *ret = newTree(Tree->begMatch,Tree->print, Tree->titleLessThan, Tree->titleGreaterThan);
+	tree *ret = newTree(Tree->begMatch,Tree->print, Tree->titleLessThan, Tree->titleGreaterThan, Tree->printScreen);
 
 	searchAux(Tree,ret,Tree->root,key);
 
@@ -400,6 +401,7 @@ void searchAux(tree *lookupTree, tree *ret, node *x, void *key)
 	}
 	else if(lookupTree->begMatch(key,x->key))
 	{
+		refresh();
 		node *y = newNode(x->key);
 		insert(ret,y);
 	}
@@ -450,5 +452,44 @@ void inOrderAux(tree *Tree, node *x, void *outSel)
 	Tree->print(x->key, outSel);
 	inOrderAux(Tree, x->right, (FILE*)(outSel));
 }
+
+void inOrderScreen(tree *Tree)
+{
+	inOrderAuxScreen(Tree, Tree->root);
+}
+
+void inOrderAuxScreen(tree *Tree, node *x)
+{
+	if(x == Tree->nil)
+		return;
+
+	inOrderAuxScreen(Tree, x->left);
+	Tree->printScreen(x->key);
+	inOrderAuxScreen(Tree, x->right);
+}
+
+LL * toLL(tree *Tree)
+{
+	LL *ret = newLL();
+
+	toLLAux(Tree, Tree->root,ret);
+	return ret;
+}
+
+void toLLAux(tree *Tree, node *x, LL *ret)
+{
+	if(x == Tree->nil)
+		return;
+
+
+
+	toLLAux(Tree, x->left, ret);
+	insertLL(ret,newLLNode(newMovieLog(x->key,"03-28-2019")));
+	toLLAux(Tree, x->right, ret);
+}
+
+
+
+
 
 

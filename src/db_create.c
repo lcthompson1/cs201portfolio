@@ -25,7 +25,7 @@ tree * importFile(char *fname)
 {
 	FILE *fp;
 	char buf[460];
-	tree *ret = newTree(begMatch,printMovieEntry, titleLessThan, titleGreaterThan);
+	tree *ret = newTree(begMatch,printMovieEntry, titleLessThan, titleGreaterThan, printMovieEntryScreen);
 
 	fp = fopen(fname,"r");
 

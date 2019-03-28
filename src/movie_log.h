@@ -19,7 +19,8 @@ typedef struct _MovieLog
 	char *date;
 }MovieLog;
 
-MovieLog * newMovieLog(MovieEntry *orig);
+MovieLog * newMovieLog(MovieEntry *orig, char *date);
+//MovieLog * newMovieLogNoDate(MovieEntry *orig);
 MovieLog * newMovieLogFile(char *title, int releaseYear, int runtime, char *genres, int dvd, int bluray, int digital, char *date);
 MovieLog * newMovieLogSearch(char *title);
 
@@ -27,12 +28,14 @@ int logTitleLessThan(void *x, void *y);
 int logTitleGreaterThan(void *x, void *y);
 int logTitleEqualTo(MovieLog *x, MovieLog *y);
 void printMovieLog(void *x, void *outSel);
+void printMovieLogScreen(void *x);
 void addDvd(MovieLog *x);
 void addBluray(MovieLog *x);
 void addDigital(MovieLog *x);
 void removeDvd(MovieLog *x);
 void removeBluray(MovieLog *x);
 void removeDigital(MovieLog *x);
+void changeDate(MovieLog *x, char *date);
 int begLogMatch(void *x, void *y);
 int begLogMatchAux(const char *s1, const char *s2);
 

@@ -22,7 +22,7 @@ tree * importLogFile(char *fname)
 {
 	FILE *fp;
 	char buf[460];
-	tree *ret = newTree(begMatch, printMovieLog, logTitleLessThan, logTitleGreaterThan);
+	tree *ret = newTree(begMatch, printMovieLog, logTitleLessThan, logTitleGreaterThan, printMovieLogScreen);
 
 	fp = fopen(fname,"r");
 

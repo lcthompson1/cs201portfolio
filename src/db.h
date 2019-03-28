@@ -1,6 +1,8 @@
 #ifndef DB_H_
 #define DB_H_
 #include "movie_entry.h"
+#include "movie_log.h"
+#include "ll.h"
 #include <stdlib.h>
 
 
@@ -25,12 +27,13 @@ typedef struct _Tree
 	node *nil;
 	int (*begMatch)(void *a, void *b);
 	void (*print)(void *entry, void *outSel);
+	void (*printScreen)(void *entry);
 	int (*titleLessThan)(void *a, void *b);
 	int (*titleGreaterThan)(void *a, void *b);
 }tree;
 
 node * newNode(void *key);
-tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, void *outSel), int (*titleLessThan)(void *a, void *b), int (*titleGreaterThan)(void *a, void *b));
+tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, void *outSel), int (*titleLessThan)(void *a, void *b), int (*titleGreaterThan)(void *a, void *b), void (*printScreen)(void *entry));
 void leftRotate(tree *Tree, node *x);
 void rightRotate( tree *Tree,  node *x);
 void insert( tree *Tree,  node *z);
@@ -41,9 +44,14 @@ void rbDelete(tree *Tree, node *z);
 void rbDeleteFixup( tree *Tree,  node *x);
 void inOrder(tree *Tree, void *outSel);
 void inOrderAux(tree *Tree, node *x, void *outSel);
+void inOrderScreen(tree *Tree);
+void inOrderAuxScreen(tree *Tree, node *x);
 //tree * searchMain(tree *Tree, node *x, void *key);
 tree * search(tree *Tree, void *key);
 void searchAux(tree *Tree,tree *ret, node *x, void *key);
+LL * toLL(tree *Tree);
+void toLLAux(tree *Tree, node *x, LL *ret);
+
 
 
 

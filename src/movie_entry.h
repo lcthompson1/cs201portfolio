@@ -26,6 +26,7 @@ int titleLessThan(void *x, void *y);
 int titleGreaterThan(void *x, void *y);
 int titleEqualTo(MovieEntry *x, MovieEntry *y);
 void printMovieEntry(void *x, void *outSel);
+void printMovieEntryScreen(void *x);
 int begMatchAux(const char *s1, const char *s2);
 int begMatch(void *x, void *y);
 

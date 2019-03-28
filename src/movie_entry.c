@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <ncurses.h>
 #include "movie_entry.h"
 
 MovieEntry * newMovieEntry(char *tc, char *tt, char *pt, char *ot, int ia, int sy, int ey, int rm, char *g)
@@ -83,6 +84,11 @@ void printMovieEntry(void *x, void *outSel)
 	fprintf((FILE*)(outSel),"%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%s\n",((MovieEntry*)x)->tconst,((MovieEntry*)x)->titleType,((MovieEntry*)x)->primaryTitle,((MovieEntry*)x)->originalTitle,((MovieEntry*)x)->isAdult,((MovieEntry*)x)->startYear,((MovieEntry*)x)->endYear,((MovieEntry*)x)->runtimeMinutes,((MovieEntry*)x)->genres);
 }
 
+void printMovieEntryScreen(void *x)
+{
+	printw("%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%s\n",((MovieEntry*)x)->tconst,((MovieEntry*)x)->titleType,((MovieEntry*)x)->primaryTitle,((MovieEntry*)x)->originalTitle,((MovieEntry*)x)->isAdult,((MovieEntry*)x)->startYear,((MovieEntry*)x)->endYear,((MovieEntry*)x)->runtimeMinutes,((MovieEntry*)x)->genres);
+}
+
 int begMatchAux(const char *s1, const char *s2)
 {
 	char cs1;
@@ -95,7 +101,16 @@ int begMatchAux(const char *s1, const char *s2)
 
 	while((cs1 = *s1++) && (cs2 = *s2++))
 	{
-		if(tolower(cs1) != tolower(cs2))
+		if(isupper(cs1))
+		{
+			cs1 = tolower(cs1);
+		}
+		if(isupper(cs2))
+		{
+			cs2 = tolower(cs2);
+		}
+
+		if(cs1 != cs2)
 			return 0;
 	}
 

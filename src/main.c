@@ -1,20 +1,19 @@
+#include "menu.h"
 #include "db_create.h"
 #include "movie_log.h"
 #include "log_create.h"
 #include <stdlib.h>
 #include <ncurses.h>
 
+
+
+
+
+
+
 int main()
 {
-/*
-	int row,col;
-	initscr();
-	getmaxyx(stdscr,row,col);
-	char entryMsg[] = "Loading lookup database, please wait.";
-	mvprintw(row/2,(col-strlen(entryMsg))/2,"%s",entryMsg);
-	refresh();
-	*/
-	tree *lookupTree = importFile("movie_records");
+
 /*
 	clear();
 	char completeMsg1[] = "Completed! Please select an option from below.\n";
@@ -84,24 +83,53 @@ int main()
 	inOrder(z,stdout);
 */
 
+//	int cont = 1;
+
+	printStart();
+	tree *lookupTree = importFile("movie_records");
+	clear();
+	printw("Completed! ");
+	refresh();
+	char menuChoice[5] = "";
+	retrieveMenuOption(menuChoice);
+
+	while(!(strcmp(menuChoice,"3") == 0))
+	{
+		if(strcmp(menuChoice,"2") == 0)
+		{
+			printNewLogMenu(menuChoice,lookupTree);
+		}
+		else if(strcmp(menuChoice,"1") == 0)
+		{
+			printExistingLogMenu(menuChoice, lookupTree);
+		}
+
+	}
 
 
+	endwin();
+
+/*
 	char *fName = "test.log";
 	tree *test = newTree(begMatch,printMovieLog,logTitleLessThan,logTitleGreaterThan);
-	MovieEntry *x = newMovieEntry("", "","asdfghjk", "", 0, 0, 0, 0, "");
+	MovieEntry *x = newMovieEntry("", "","Avengers", "", 0, 0, 0, 0, "");
 	tree *results = search(lookupTree, x);
+	inOrder(test,stdout);
 	insert(test,newNode(newMovieLog(results->root->key)));
 
-	x = newMovieEntry("", "","    ", "", 0, 0, 0, 0, "");
+	x = newMovieEntry("", "","Final", "", 0, 0, 0, 0, "");
 	results = search(lookupTree, x);
+	inOrder(test,stdout);
 	insert(test,newNode(newMovieLog(results->root->key)));
 
-	x = newMovieEntry("", "","Coraline", "", 0, 0, 0, 0, "");
+	x = newMovieEntry("", "","Nightmare", "", 0, 0, 0, 0, "");
 	results = search(lookupTree, x);
+	inOrder(test,stdout);
 	insert(test,newNode(newMovieLog(results->root->key)));
 
-	x = newMovieEntry("", "","Fast", "", 0, 0, 0, 0, "");
+	x = newMovieEntry("", "","John", "", 0, 0, 0, 0, "");
 	results = search(lookupTree, x);
+	inOrder(test,stdout);
 	insert(test,newNode(newMovieLog(results->root->key)));
 
 	inOrder(test,stdout);
@@ -110,7 +138,7 @@ int main()
 	exportLogFile(test,fName);
 
 
-
+*/
 
 
 
