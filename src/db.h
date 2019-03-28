@@ -18,15 +18,19 @@ typedef struct _Node
 	int color;
 }node;
 
-//RB Tree structure containing pointers for root and nil
+//RB Tree structure containing pointers for root, sentinel node, and matching function
 typedef struct _Tree
 {
 	node *root;
 	node *nil;
+	int (*begMatch)(void *a, void *b);
+	void (*print)(void *entry, void *outSel);
+	int (*titleLessThan)(void *a, void *b);
+	int (*titleGreaterThan)(void *a, void *b);
 }tree;
 
 node * newNode(void *key);
-tree * newTree();
+tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, void *outSel), int (*titleLessThan)(void *a, void *b), int (*titleGreaterThan)(void *a, void *b));
 void leftRotate(tree *Tree, node *x);
 void rightRotate( tree *Tree,  node *x);
 void insert( tree *Tree,  node *z);
@@ -35,8 +39,13 @@ void rbTransplant( tree *Tree,  node *u,  node *v);
 node * treeMinimum(tree *Tree, node *x);
 void rbDelete(tree *Tree, node *z);
 void rbDeleteFixup( tree *Tree,  node *x);
-void inOrder(tree *Tree);
-void inOrderAux(tree *Tree, node *x);
-node * search(tree *Tree, node *x, MovieEntry *key);
+void inOrder(tree *Tree, void *outSel);
+void inOrderAux(tree *Tree, node *x, void *outSel);
+//tree * searchMain(tree *Tree, node *x, void *key);
+tree * search(tree *Tree, void *key);
+void searchAux(tree *Tree,tree *ret, node *x, void *key);
+
+
+
 
 #endif

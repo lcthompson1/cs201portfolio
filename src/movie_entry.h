@@ -2,6 +2,7 @@
 #define MOVIE_ENTRY_H_
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 typedef struct _MovieEntry MovieEntry;
 
@@ -21,18 +22,11 @@ typedef struct _MovieEntry
 
 MovieEntry * newMovieEntry(char *tc, char *tt, char *pt, char *ot, int ia, int sy, int ey, int rm, char *g);
 MovieEntry * newMovieEntrySearch(char *title);
-int titleLessThan(MovieEntry *x, MovieEntry *y);
-int titleGreaterThan(MovieEntry *x, MovieEntry *y);
+int titleLessThan(void *x, void *y);
+int titleGreaterThan(void *x, void *y);
 int titleEqualTo(MovieEntry *x, MovieEntry *y);
-void printTconst(MovieEntry *x);
-void printTitleType(MovieEntry *x);
-void printPrimaryTitle(MovieEntry *x);
-void printOriginalTitle(MovieEntry *x);
-void printIsAdult(MovieEntry *x);
-void printStartYear(MovieEntry *x);
-void printEndYear(MovieEntry *x);
-void printRuntimeMinutes(MovieEntry *x);
-void printGenres(MovieEntry *x);
-void printMovieEntry(MovieEntry *x);
+void printMovieEntry(void *x, void *outSel);
+int begMatchAux(const char *s1, const char *s2);
+int begMatch(void *x, void *y);
 
 #endif

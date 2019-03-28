@@ -1,21 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "movie_log.h"
 
-MovieLog * newMovieLog(char *tc, char *tt, char *pt, char *ot, int ia, int sy, int ey, int rm, char *g)
+MovieLog * newMovieLog(MovieEntry *orig)
 {
 	MovieLog *x = malloc(sizeof(MovieLog));
 
-	x->tconst = strdup(tc);
-	x->titleType = strdup(tt);
-	x->primaryTitle = strdup(pt);
-	x->originalTitle = strdup(ot);
-	x->isAdult = ia;
-	x->startYear = sy;
-	x->endYear = ey;
-	x->runtimeMinutes = rm;
-	x->genres = strdup(g);
+	x->title = strdup(orig->primaryTitle);
+	x->releaseYear = orig->startYear;
+	x->runtime = orig->runtimeMinutes;
+	x->genres = strdup(orig->genres);
+	x->dvd = 0;
+	x->bluray = 0;
+	x->digital = 0;
+	x->date = "";
+
+
+	return x;
+}
+
+MovieLog * newMovieLogFile(char *title, int releaseYear, int runtime, char *genres, int dvd, int bluray, int digital, char *date)
+{
+	MovieLog *x = malloc(sizeof(MovieLog));
+
+	x->title = strdup(title);
+	x->releaseYear = releaseYear;
+	x->runtime = runtime;
+	x->genres = strdup(genres);
+	x->dvd = dvd;
+	x->bluray = bluray;
+	x->digital = digital;
+	x->date = strdup(date);
+
 
 	return x;
 }
@@ -24,22 +42,21 @@ MovieLog * newMovieLogSearch(char *title)
 {
 	MovieLog *x = malloc(sizeof(MovieLog));
 
-	x->tconst = "";
-	x->titleType = "";
-	x->primaryTitle = strdup(title);
-	x->originalTitle = "";
-	x->isAdult = 0;
-	x->startYear = 0;
-	x->endYear = 0;
-	x->runtimeMinutes = 0;
+	x->title = strdup(title);
+	x->releaseYear = 0;
+	x->runtime = 0;
 	x->genres = "";
+	x->dvd = 0;
+	x->bluray = 0;
+	x->digital = 0;
+	x->date = "";
 
 	return x;
 }
 
-int titleLessThan(MovieLog *x, MovieLog *y)
+int logTitleLessThan(void *x, void *y)
 {
-	if(strcmp(x->primaryTitle, y->primaryTitle) < 0)
+	if(strcmp(((MovieLog*)x)->title, ((MovieLog*)y)->title) < 0)
 	{
 		return 1;
 	}
@@ -49,9 +66,9 @@ int titleLessThan(MovieLog *x, MovieLog *y)
 	}
 }
 
-int titleGreaterThan(MovieLog *x, MovieLog *y)
+int logTitleGreaterThan(void *x, void *y)
 {
-	if(strcmp(x->primaryTitle, y->primaryTitle) > 0)
+	if(strcmp(((MovieLog*)x)->title, ((MovieLog*)y)->title) > 0)
 	{
 		return 1;
 	}
@@ -61,9 +78,9 @@ int titleGreaterThan(MovieLog *x, MovieLog *y)
 	}
 }
 
-int titleEqualTo(MovieLog *x, MovieLog *y)
+int logTitleEqualTo(MovieLog *x, MovieLog *y)
 {
-	if(strcmp(x->primaryTitle, y->primaryTitle) == 0)
+	if(strcmp(x->title, y->title) == 0)
 	{
 		return 1;
 	}
@@ -73,71 +90,68 @@ int titleEqualTo(MovieLog *x, MovieLog *y)
 	}
 }
 
-void printTconst(MovieLog *x)
+void printMovieLog(void *x, void *outSel)
 {
-	printf("%s",x->tconst);
+	fprintf((FILE*)(outSel),"%s\t%d\t%d\t%s\t%d\t%d\t%d\t%s\n",((MovieLog*)x)->title,((MovieLog*)x)->releaseYear,((MovieLog*)x)->runtime,((MovieLog*)x)->genres,((MovieLog*)x)->dvd,((MovieLog*)x)->bluray,((MovieLog*)x)->digital,((MovieLog*)x)->date);
 }
 
-void printTitleType(MovieLog *x)
+void addDvd(MovieLog *x)
 {
-	printf("%s",x->titleType);
+	x->dvd = 1;
 }
 
-void printPrimaryTitle(MovieLog *x)
+void addBluray(MovieLog *x)
 {
-	printf("%s",x->primaryTitle);
+	x->bluray = 1;
 }
 
-void printOriginalTitle(MovieLog *x)
+void addDigital(MovieLog *x)
 {
-	printf("%s",x->originalTitle);
+	x->digital = 1;
 }
 
-void printIsAdult(MovieLog *x)
+void removeDvd(MovieLog *x)
 {
-	printf("%d",x->isAdult);
+	x->dvd = 0;
 }
 
-void printStartYear(MovieLog *x)
+void removeBluray(MovieLog *x)
 {
-	printf("%s",x->tconst);
+	x->bluray = 0;
 }
 
-void printEndYear(MovieLog *x)
+void removeDigital(MovieLog *x)
 {
-	printf("%d",x->endYear);
+	x->digital = 0;
 }
 
-void printRuntimeMinutes(MovieLog *x)
+int begLogMatch(void *x, void *y)
 {
-	printf("%d",x->runtimeMinutes);
+	int found;
+	found = begMatchAux(((MovieEntry*)x)->primaryTitle,((MovieEntry*)y)->primaryTitle);
+	return found;
 }
 
-void printGenres(MovieLog *x)
+int begLogMatchAux(const char *s1, const char *s2)
 {
-	printf("%s",x->genres);
+	char cs1;
+	char cs2;
+
+	if(!*s1)
+	{
+		return 1;
+	}
+
+	while((cs1 = *s1++) && (cs2 = *s2++))
+	{
+		if(tolower(cs1) != tolower(cs2))
+			return 0;
+	}
+
+	if(!cs2)
+		return 0;
+
+	return 1;
 }
 
-void printMovieLog(MovieLog *x)
-{
 
-
-	printTconst(x);
-	printf("     ");
-	printTitleType(x);
-	printf("     ");
-	printPrimaryTitle(x);
-	printf("     ");
-	printOriginalTitle(x);
-	printf("     ");
-	printIsAdult(x);
-	printf("     ");
-	printStartYear(x);
-	printf("     ");
-	printEndYear(x);
-	printf("     ");
-	printRuntimeMinutes(x);
-	printf("     ");
-	printGenres(x);
-	printf("\n");
-}

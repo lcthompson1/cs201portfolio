@@ -14,7 +14,7 @@ node * newNode(void *key)
 	return x;
 }
 
-tree * newTree()
+tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, void *outSel), int (*titleLessThan)(void *a, void *b), int (*titleGreaterThan)(void *a, void *b))
 {
 	tree *x = malloc(sizeof(tree));
 	node *sentinel = malloc(sizeof(node));
@@ -25,6 +25,10 @@ tree * newTree()
 
 	x->nil = sentinel;
 	x->root = x->nil;
+	x->begMatch = begMatch;
+	x->print = print;
+	x->titleGreaterThan = titleGreaterThan;
+	x->titleLessThan = titleLessThan;
 	return x;
 }
 
@@ -105,7 +109,7 @@ void insert(tree *Tree, node *z)
 	{
 		y = x;
 
-		if(titleLessThan(z->key ,x->key))
+		if(Tree->titleLessThan(z->key ,x->key))
 		{
 			x = x->left;
 		}
@@ -121,7 +125,7 @@ void insert(tree *Tree, node *z)
 	{
 		Tree->root = z;
 	}
-	else if(titleLessThan(z->key ,y->key))
+	else if(Tree->titleLessThan(z->key ,y->key))
 	{
 		y->left = z;
 	}
@@ -345,35 +349,106 @@ void rbDeleteFixup(tree *Tree, node *x)
 	x->color = BLACK;
 }
 
-node * search(tree *Tree, node *x, MovieEntry *key)
+//tree * searchMain(tree *Tree, void *key)
+//{
+//
+//}
+/*
+void search(tree *Tree, node *x, void *key)
 {
-	if((x == Tree->nil) | (titleEqualTo(key, x->key)))
+	tree *ret = newTree(Tree->begMatch);
+
+	node *inOrig = searchAux(Tree,Tree->root,key);
+
+	if(inOrig != Tree->nil)
+	{
+		node *in = newNode(inOrig->key);
+		insert(ret,in);
+
+		node *inLeftOrig = searchAux(Tree,inOrig->left,key);
+		while(inLeftOrig != Tree->nil)
+		{
+			node *inLeft = newNode(inLeftOrig->key);
+
+		}
+
+		in = newNode(searchAux(Tree,Tree->root,key)->key);
+	}
+
+	return ret;
+
+
+}
+*/
+
+tree * search(tree *Tree, void *key)
+{
+	tree *ret = newTree(Tree->begMatch,Tree->print, Tree->titleLessThan, Tree->titleGreaterThan);
+
+	searchAux(Tree,ret,Tree->root,key);
+
+	return ret;
+
+
+}
+
+void searchAux(tree *lookupTree, tree *ret, node *x, void *key)
+{
+	if((x == lookupTree->nil))
+	{
+		return;
+	}
+	else if(lookupTree->begMatch(key,x->key))
+	{
+		node *y = newNode(x->key);
+		insert(ret,y);
+	}
+
+
+	if(lookupTree->titleLessThan(key ,x->key))
+	{
+		searchAux(lookupTree,ret,x->left,key);
+	}
+	if(lookupTree->titleGreaterThan(key,x->key))
+	{
+		searchAux(lookupTree,ret,x->right,key);
+	}
+}
+
+/*
+ * node * searchAux(tree *Tree, node *x, void *key)
+{
+	if(((x == Tree->nil) | (Tree->begMatch(key,x->key))))
 	{
 		return x;
 	}
 	if(titleLessThan(key ,x->key))
 	{
-		return search(Tree,x->left,key);
+		return searchAux(Tree,x->left,key);
 	}
 	else
 	{
-		return search(Tree,x->right,key);
+		return searchAux(Tree,x->right,key);
 	}
 }
+ *
+ */
 
-void inOrder(tree *Tree)
+
+void inOrder(tree *Tree, void *outSel)
 {
-	inOrderAux(Tree, Tree->root);
-	printf("\n");
+	inOrderAux(Tree, Tree->root, outSel);
 }
 
-void inOrderAux(tree *Tree, node *x)
+void inOrderAux(tree *Tree, node *x, void *outSel)
 {
 	if(x == Tree->nil)
 		return;
 
-	inOrderAux(Tree, x->left);
-	printMovieEntry(x->key);
-	printf("\n");
-	inOrderAux(Tree, x->right);
+	inOrderAux(Tree, x->left, (FILE*)(outSel));
+//	printMovieEntry(x->key);
+	Tree->print(x->key, outSel);
+	inOrderAux(Tree, x->right, (FILE*)(outSel));
 }
+
+

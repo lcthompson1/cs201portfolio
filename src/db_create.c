@@ -14,6 +14,8 @@ MovieEntry * readEntry(char *line)
 	char *rm = strtok(NULL,"\t");
 	char *g = strtok(NULL,"\t");
 
+	g[strlen(g)-1] = 0;
+
 	MovieEntry *ret = newMovieEntry(tc,tt,pt,ot,atoi(ia),atoi(sy),atoi(ey),atoi(rm),g);
 	return ret;
 }
@@ -23,7 +25,7 @@ tree * importFile(char *fname)
 {
 	FILE *fp;
 	char buf[460];
-	tree *ret = newTree();
+	tree *ret = newTree(begMatch,printMovieEntry, titleLessThan, titleGreaterThan);
 
 	fp = fopen(fname,"r");
 
