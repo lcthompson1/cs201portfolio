@@ -7,5 +7,5 @@ program: $(DEPO)
 	$(CC) $(CFLAGS) -o program $(DEPO) -lncurses
 
 clean:
-	rm program
 	rm *.o
+	rm program

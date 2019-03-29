@@ -2,6 +2,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+ *
+ *
+ *
+ * Author: Logan Thompson
+ * Date: 03/29/2019
+ *
+ *
+ * ToDo:
+ */
+
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 node * newNode(void *key)
 {
 	node *x = malloc(sizeof(node));
@@ -14,6 +32,13 @@ node * newNode(void *key)
 	return x;
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, void *outSel), int (*titleLessThan)(void *a, void *b), int (*titleGreaterThan)(void *a, void *b), void (*printScreen)(void *entry))
 {
 	tree *x = malloc(sizeof(tree));
@@ -33,7 +58,13 @@ tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, voi
 	return x;
 }
 
-
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void leftRotate(tree *Tree, node *x)
 {
 	node *y = x->right;
@@ -66,7 +97,13 @@ void leftRotate(tree *Tree, node *x)
 }
 
 
-
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void rightRotate(tree *Tree, node *x)
 {
 	node *y;
@@ -100,7 +137,13 @@ void rightRotate(tree *Tree, node *x)
 }
 
 
-
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void insert(tree *Tree, node *z)
 {
 	node *y = Tree->nil;
@@ -141,7 +184,13 @@ void insert(tree *Tree, node *z)
 	insertFixup(Tree, z);
 }
 
-
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void insertFixup(tree *Tree, node *z)
 {
 	node *y;
@@ -201,6 +250,13 @@ void insertFixup(tree *Tree, node *z)
 
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void rbTransplant(tree *Tree, node *u, node *v)
 {
 	if(u->p == Tree->nil)
@@ -219,7 +275,13 @@ void rbTransplant(tree *Tree, node *u, node *v)
 	v->p = u->p;
 }
 
-
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void rbDelete(tree *Tree, node *z)
 {
 	node *y = z;
@@ -267,7 +329,13 @@ void rbDelete(tree *Tree, node *z)
 }
 
 
-
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 node * treeMinimum(tree *Tree, node *x)
 {
 	node *current = x;
@@ -280,6 +348,13 @@ node * treeMinimum(tree *Tree, node *x)
 	return current;
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void rbDeleteFixup(tree *Tree, node *x)
 {
 	while(x != x->p->left)
@@ -350,38 +425,14 @@ void rbDeleteFixup(tree *Tree, node *x)
 	x->color = BLACK;
 }
 
-//tree * searchMain(tree *Tree, void *key)
-//{
-//
-//}
+
 /*
-void search(tree *Tree, node *x, void *key)
-{
-	tree *ret = newTree(Tree->begMatch);
-
-	node *inOrig = searchAux(Tree,Tree->root,key);
-
-	if(inOrig != Tree->nil)
-	{
-		node *in = newNode(inOrig->key);
-		insert(ret,in);
-
-		node *inLeftOrig = searchAux(Tree,inOrig->left,key);
-		while(inLeftOrig != Tree->nil)
-		{
-			node *inLeft = newNode(inLeftOrig->key);
-
-		}
-
-		in = newNode(searchAux(Tree,Tree->root,key)->key);
-	}
-
-	return ret;
-
-
-}
-*/
-
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 tree * search(tree *Tree, void *key)
 {
 	tree *ret = newTree(Tree->begMatch,Tree->print, Tree->titleLessThan, Tree->titleGreaterThan, Tree->printScreen);
@@ -393,6 +444,13 @@ tree * search(tree *Tree, void *key)
 
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void searchAux(tree *lookupTree, tree *ret, node *x, void *key)
 {
 	if((x == lookupTree->nil))
@@ -401,47 +459,43 @@ void searchAux(tree *lookupTree, tree *ret, node *x, void *key)
 	}
 	else if(lookupTree->begMatch(key,x->key))
 	{
-		refresh();
 		node *y = newNode(x->key);
 		insert(ret,y);
+
+
+		searchAux(lookupTree,ret,x->left,key);
+		searchAux(lookupTree,ret,x->right,key);
+
 	}
-
-
-	if(lookupTree->titleLessThan(key ,x->key))
+	else if(lookupTree->titleLessThan(key ,x->key))
 	{
 		searchAux(lookupTree,ret,x->left,key);
 	}
-	if(lookupTree->titleGreaterThan(key,x->key))
+	else if(lookupTree->titleGreaterThan(key,x->key))
 	{
 		searchAux(lookupTree,ret,x->right,key);
 	}
 }
 
 /*
- * node * searchAux(tree *Tree, node *x, void *key)
-{
-	if(((x == Tree->nil) | (Tree->begMatch(key,x->key))))
-	{
-		return x;
-	}
-	if(titleLessThan(key ,x->key))
-	{
-		return searchAux(Tree,x->left,key);
-	}
-	else
-	{
-		return searchAux(Tree,x->right,key);
-	}
-}
+ * Function:
+ * Input:
+ * Output:
  *
+ * ToDo:
  */
-
-
 void inOrder(tree *Tree, void *outSel)
 {
 	inOrderAux(Tree, Tree->root, outSel);
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void inOrderAux(tree *Tree, node *x, void *outSel)
 {
 	if(x == Tree->nil)
@@ -453,11 +507,25 @@ void inOrderAux(tree *Tree, node *x, void *outSel)
 	inOrderAux(Tree, x->right, (FILE*)(outSel));
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void inOrderScreen(tree *Tree)
 {
 	inOrderAuxScreen(Tree, Tree->root);
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void inOrderAuxScreen(tree *Tree, node *x)
 {
 	if(x == Tree->nil)
@@ -468,6 +536,13 @@ void inOrderAuxScreen(tree *Tree, node *x)
 	inOrderAuxScreen(Tree, x->right);
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 LL * toLL(tree *Tree)
 {
 	LL *ret = newLL();
@@ -476,6 +551,13 @@ LL * toLL(tree *Tree)
 	return ret;
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void toLLAux(tree *Tree, node *x, LL *ret)
 {
 	if(x == Tree->nil)
@@ -487,6 +569,65 @@ void toLLAux(tree *Tree, node *x, LL *ret)
 	insertLL(ret,newLLNode(newMovieLog(x->key,"03-28-2019")));
 	toLLAux(Tree, x->right, ret);
 }
+
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
+LL * toLLLog(tree *Tree)
+{
+	LL *ret = newLL();
+
+	toLLLogAux(Tree, Tree->root,ret);
+	return ret;
+}
+
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
+void toLLLogAux(tree *Tree, node *x, LL *ret)
+{
+	if(x == Tree->nil)
+		return;
+
+
+
+	toLLLogAux(Tree, x->left, ret);
+	insertLL(ret,newLLNode(x->key));
+	toLLLogAux(Tree, x->right, ret);
+}
+
+node * exactSearch(tree *Tree, node *x)
+{
+	return exactSearchAux(Tree, Tree->root, x);
+}
+
+node * exactSearchAux(tree *Tree, node *next, node *search)
+{
+	if((next == Tree->nil) || (strcmp(((MovieLog*)next->key)->title,((MovieLog*)search->key)->title) == 0))
+	{
+		return next;
+	}
+
+
+	if((strcmp(((MovieLog*)next->key)->title,((MovieLog*)search->key)->title) > 0))
+	{
+		return exactSearchAux(Tree,next->left,search);
+	}
+
+		return exactSearchAux(Tree,next->right,search);
+}
+
+
+
+
 
 
 

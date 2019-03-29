@@ -1,4 +1,5 @@
 #!/bin/bash
 
-#wget https://datasets.imdbws.com/title.basics.tsv.gz
+wget https://datasets.imdbws.com/title.basics.tsv.gz
+tar xzf title.basics.tsv.gz
 grep "movie" title.basics.tsv > movie_records

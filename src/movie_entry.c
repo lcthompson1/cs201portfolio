@@ -5,6 +5,25 @@
 #include <ncurses.h>
 #include "movie_entry.h"
 
+/* movie_entry.c
+ *
+ * Contains all functions related to the MovieEntry structure
+ *
+ *
+ * Author: Logan Thompson
+ * Date: 03/29/2019
+ *
+ *
+ * ToDo: Nothing
+ */
+
+/*
+ * Function: newMovieEntry
+ * Input: char pointers and integers containing MovieEntry variables
+ * Output: MovieEntry pointer
+ *
+ * ToDo: Nothing
+ */
 MovieEntry * newMovieEntry(char *tc, char *tt, char *pt, char *ot, int ia, int sy, int ey, int rm, char *g)
 {
 	MovieEntry *x = malloc(sizeof(MovieEntry));
@@ -22,6 +41,13 @@ MovieEntry * newMovieEntry(char *tc, char *tt, char *pt, char *ot, int ia, int s
 	return x;
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 MovieEntry * newMovieEntrySearch(char *title)
 {
 	MovieEntry *x = malloc(sizeof(MovieEntry));
@@ -39,9 +65,35 @@ MovieEntry * newMovieEntrySearch(char *title)
 	return x;
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
+char * toLowerString(char *string)
+{
+	char *s = strdup(string);
+
+	for(int i = 0; s[i] != '\0';i++)
+	{
+		s[i] = tolower(s[i]);
+	}
+
+	return s;
+}
+
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 int titleLessThan(void *x, void *y)
 {
-	if(strcmp(((MovieEntry*)x)->primaryTitle, ((MovieEntry*)y)->primaryTitle) < 0)
+	if(strcmp(toLowerString(((MovieEntry*)x)->primaryTitle), toLowerString(((MovieEntry*)y)->primaryTitle)) < 0)
 	{
 //		printf("%s less than %s = 1\n",x->primaryTitle,y->primaryTitle);
 		return 1;
@@ -53,9 +105,16 @@ int titleLessThan(void *x, void *y)
 	}
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 int titleGreaterThan(void *x, void *y)
 {
-	if(strcmp(((MovieEntry*)x)->primaryTitle, ((MovieEntry*)y)->primaryTitle) > 0)
+	if(strcmp(toLowerString(((MovieEntry*)x)->primaryTitle), toLowerString(((MovieEntry*)y)->primaryTitle)) > 0)
 	{
 		return 1;
 	}
@@ -65,9 +124,16 @@ int titleGreaterThan(void *x, void *y)
 	}
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 int titleEqualTo(MovieEntry *x, MovieEntry *y)
 {
-	if(strcmp(x->primaryTitle, y->primaryTitle) == 0)
+	if(strcmp(toLowerString(x->primaryTitle), toLowerString(y->primaryTitle)) == 0)
 	{
 		return 1;
 	}
@@ -78,48 +144,67 @@ int titleEqualTo(MovieEntry *x, MovieEntry *y)
 }
 
 
-
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void printMovieEntry(void *x, void *outSel)
 {
 	fprintf((FILE*)(outSel),"%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%s\n",((MovieEntry*)x)->tconst,((MovieEntry*)x)->titleType,((MovieEntry*)x)->primaryTitle,((MovieEntry*)x)->originalTitle,((MovieEntry*)x)->isAdult,((MovieEntry*)x)->startYear,((MovieEntry*)x)->endYear,((MovieEntry*)x)->runtimeMinutes,((MovieEntry*)x)->genres);
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 void printMovieEntryScreen(void *x)
 {
 	printw("%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%s\n",((MovieEntry*)x)->tconst,((MovieEntry*)x)->titleType,((MovieEntry*)x)->primaryTitle,((MovieEntry*)x)->originalTitle,((MovieEntry*)x)->isAdult,((MovieEntry*)x)->startYear,((MovieEntry*)x)->endYear,((MovieEntry*)x)->runtimeMinutes,((MovieEntry*)x)->genres);
 }
 
-int begMatchAux(const char *s1, const char *s2)
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
+int begMatchAux(const char *searchTerm, const char *full)
 {
-	char cs1;
-	char cs2;
+	char st;
+	char f;
+	int ret = 1;
 
-	if(!*s1)
+	for(int x = 0; searchTerm[x] != '\0'; x++)
 	{
-		return 1;
-	}
+		st = searchTerm[x];
+		f = full[x];
 
-	while((cs1 = *s1++) && (cs2 = *s2++))
-	{
-		if(isupper(cs1))
+		st = tolower(st);
+		f = tolower(f);
+
+		if(st != f)
 		{
-			cs1 = tolower(cs1);
+			ret = 0;
+			break;
 		}
-		if(isupper(cs2))
-		{
-			cs2 = tolower(cs2);
-		}
-
-		if(cs1 != cs2)
-			return 0;
 	}
-
-	if(!cs2)
-		return 0;
-
-	return 1;
+	return ret;
 }
 
+/*
+ * Function:
+ * Input:
+ * Output:
+ *
+ * ToDo:
+ */
 int begMatch(void *x, void *y)
 {
 	int found;
