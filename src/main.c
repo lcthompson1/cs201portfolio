@@ -23,18 +23,22 @@ int main()
 	clear();
 	printw("Completed!\n");
 
-	char menuChoice[5] = "";
-	retrieveMenuOption(menuChoice);
+	int menuChoice = 0;
+	menuChoice = retrieveMenuOption();
 
-	while(!(strcmp(menuChoice,"3") == 0))
+	while(!(menuChoice == 3))
 	{
-		if(strcmp(menuChoice,"2") == 0)
+		if(menuChoice == 2)
 		{
-			printNewLogMenu(menuChoice,lookupTree);
+			menuChoice = printNewLogMenu(lookupTree);
 		}
-		else if(strcmp(menuChoice,"1") == 0)
+		else if(menuChoice == 1)
 		{
-			printExistingLogMenu(menuChoice, lookupTree);
+			menuChoice = printExistingLogMenu(lookupTree);
+		}
+		else
+		{
+			menuChoice = retrieveMenuOption();
 		}
 	}
 

@@ -19,11 +19,11 @@
 
 //Declarations for all functions used in menu implementation
 void printStart();
-void modifyLogMenu(tree *userTree, char *searchTerm, char *fName);
+int modifyLogMenu(tree *userTree, char *searchTerm, char *fName);
 int displayLogMenu(tree *userTree);
-void retrieveMenuOption(char *menuChoice);
-void printNewLogMenu(char *menuChoice, tree *lookupTree);
-void printExistingLogMenu(char *menuChoice, tree *lookupTree);
+int retrieveMenuOption();
+int printNewLogMenu(tree *lookupTree);
+int printExistingLogMenu(tree *lookupTree);
 void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp);
 
 #endif

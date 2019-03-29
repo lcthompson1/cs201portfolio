@@ -17,9 +17,12 @@
  */
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: newMovieLog
+ * Input: MovieEntry pointer, string
+ * Output: MovieLog pointer
+ *
+ * Copies applicable data from MovieEntry object and provided date to new MovieLog
+ * and returns a pointer to that MovieLog
  *
  * ToDo:
  */
@@ -41,9 +44,12 @@ MovieLog * newMovieLog(MovieEntry *orig, char *date)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: newMovieLogFile
+ * Input: char pointers and integers representing structure variables
+ * Output: MovieLog pointer
+ *
+ * Creates a MovieLog pointer to object with all variables passed to it
+ * Used for log importing
  *
  * ToDo:
  */
@@ -64,6 +70,15 @@ MovieLog * newMovieLogFile(char *title, int releaseYear, int runtime, char *genr
 	return x;
 }
 
+/*
+ * Function: newMovieLogSearch
+ * Input: char pointer
+ * Output:MovieLog pointer
+ *
+ * Creates a Movielog with only a valid title to be used for searching and returns a pointer to it
+ *
+ * ToDo:
+ */
 MovieLog * newMovieLogSearch(char *title)
 {
 	MovieLog *x = malloc(sizeof(MovieLog));
@@ -81,9 +96,11 @@ MovieLog * newMovieLogSearch(char *title)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: logTitleLessThan
+ * Input:void pointers
+ * Output: integer
+ *
+ * Returns 1 if first MovieLog title is less than second
  *
  * ToDo:
  */
@@ -100,9 +117,10 @@ int logTitleLessThan(void *x, void *y)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: logTitleGreaterThan
+ * Input:two void pointers
+ * Output: integer
+ * Returns 1 if first MovieLog title is greater than second
  *
  * ToDo:
  */
@@ -119,9 +137,11 @@ int logTitleGreaterThan(void *x, void *y)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: logTitleEqualTo
+ * Input: two MovieLog pointers
+ * Output: integer
+ *
+ * Returns 1 if first MovieLog title is equal to the second
  *
  * ToDo:
  */
@@ -138,9 +158,11 @@ int logTitleEqualTo(MovieLog *x, MovieLog *y)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: printMovieLog
+ * Input: void pointer and void pointer
+ * Output: none
+ *
+ * prints MovieLog to file pointer specified
  *
  * ToDo:
  */
@@ -150,106 +172,65 @@ void printMovieLog(void *x, void *outSel)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: printMovieLogScreen
+ * Input: void pointer
+ * Output:none
+ *
+ * prints movielog to screen using ncurses
  *
  * ToDo:
  */
 void printMovieLogScreen(void *x)
 {
-	printw("%s\t%d\t%d\t%s\t%d\t%d\t%d\t%s\n",((MovieLog*)x)->title,((MovieLog*)x)->releaseYear,((MovieLog*)x)->runtime,((MovieLog*)x)->genres,((MovieLog*)x)->dvd,((MovieLog*)x)->bluray,((MovieLog*)x)->digital,((MovieLog*)x)->date);
+	printw("%-50s%-12d%-7d%-25s%-6d%-9d%-10d%-10s\n",((MovieLog*)x)->title,((MovieLog*)x)->releaseYear,((MovieLog*)x)->runtime,((MovieLog*)x)->genres,((MovieLog*)x)->dvd,((MovieLog*)x)->bluray,((MovieLog*)x)->digital,((MovieLog*)x)->date);
 //	refresh();
 }
 
 /*
- * Function:
- * Input:
- * Output:
- *
- * ToDo:
+ * All below functions modify their respective(in function name) variable to modify the
+ * media type of a MovieLog
  */
 void addDvd(MovieLog *x)
 {
 	x->dvd = 1;
 }
 
-/*
- * Function:
- * Input:
- * Output:
- *
- * ToDo:
- */
 void addBluray(MovieLog *x)
 {
 	x->bluray = 1;
 }
 
-/*
- * Function:
- * Input:
- * Output:
- *
- * ToDo:
- */
 void addDigital(MovieLog *x)
 {
 	x->digital = 1;
 }
 
-/*
- * Function:
- * Input:
- * Output:
- *
- * ToDo:
- */
 void removeDvd(MovieLog *x)
 {
 	x->dvd = 0;
 }
 
-/*
- * Function:
- * Input:
- * Output:
- *
- * ToDo:
- */
 void removeBluray(MovieLog *x)
 {
 	x->bluray = 0;
 }
 
-/*
- * Function:
- * Input:
- * Output:
- *
- * ToDo:
- */
 void removeDigital(MovieLog *x)
 {
 	x->digital = 0;
 }
 
-/*
- * Function:
- * Input:
- * Output:
- *
- * ToDo:
- */
 void changeDate(MovieLog *x, char *date)
 {
 	x->date = strdup(date);
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: begLogMatch
+ * Input:two void pointers
+ * Output: integer
+ *
+ * Returns 1 if first string is substring of second string
  *
  * ToDo:
  */
@@ -261,9 +242,11 @@ int begLogMatch(void *x, void *y)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: begLogMatchAux
+ * Input: search term and full string
+ * Output: int
+ *
+ * Auxillary function to begLogMatch
  *
  * ToDo:
  */

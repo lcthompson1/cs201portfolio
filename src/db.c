@@ -14,9 +14,11 @@
  */
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: newNode
+ * Input: void pointer
+ * Output:node pointer
+ *
+ * Creates a new node with the key passed to it and returns a pointer to it
  *
  * ToDo:
  */
@@ -33,9 +35,11 @@ node * newNode(void *key)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: newTree
+ * Input: comparison and print function pointers
+ * Output: tree pointer
+ *
+ * Creates a tree using passed function pointers and returns a pointer to it
  *
  * ToDo:
  */
@@ -59,9 +63,11 @@ tree * newTree(int (*begMatch)(void *a, void *b), void (*print)(void *entry, voi
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: leftRotate
+ * Input: tree, node
+ * Output: none
+ *
+ * performs a BST left rotate
  *
  * ToDo:
  */
@@ -98,9 +104,11 @@ void leftRotate(tree *Tree, node *x)
 
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: rightRotate
+ * Input:tree, node
+ * Output: none
+ *
+ * Performs a BST right rotate
  *
  * ToDo:
  */
@@ -138,9 +146,11 @@ void rightRotate(tree *Tree, node *x)
 
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: insert
+ * Input:tree, node
+ * Output:none
+ *
+ * inserts the passed node into the tree then performs an RB fixup
  *
  * ToDo:
  */
@@ -185,9 +195,11 @@ void insert(tree *Tree, node *z)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: insertFixup
+ * Input: tree, node
+ * Output: none
+ *
+ * Performs a RB fixup, repairing RBTree violations in the passed tree
  *
  * ToDo:
  */
@@ -276,9 +288,11 @@ void rbTransplant(tree *Tree, node *u, node *v)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: rbDelete
+ * Input:tree, node
+ * Output:none
+ *
+ * Performs a BST node delete and then calls a RB fixup
  *
  * ToDo:
  */
@@ -330,9 +344,11 @@ void rbDelete(tree *Tree, node *z)
 
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: treeMinimum
+ * Input:tree, node
+ * Output:node pointer
+ *
+ * Recursively searches for lowest value in tree and returns a pointer to it
  *
  * ToDo:
  */
@@ -349,9 +365,11 @@ node * treeMinimum(tree *Tree, node *x)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: rbDeleteFixup
+ * Input:tree, node
+ * Output:none
+ *
+ * Performs a RBTree fixup to repair any tree violations
  *
  * ToDo:
  */
@@ -427,16 +445,17 @@ void rbDeleteFixup(tree *Tree, node *x)
 
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: search
+ * Input:tree, void pointer
+ * Output: tree pointer
+ *
+ * Returns a tree with all entries that match the desired key(substring based)
  *
  * ToDo:
  */
 tree * search(tree *Tree, void *key)
 {
 	tree *ret = newTree(Tree->begMatch,Tree->print, Tree->titleLessThan, Tree->titleGreaterThan, Tree->printScreen);
-
 	searchAux(Tree,ret,Tree->root,key);
 
 	return ret;
@@ -445,9 +464,11 @@ tree * search(tree *Tree, void *key)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: searchAux
+ * Input:tree, tree, node ,void pointer
+ * Output:none
+ *
+ * Auxillary function to search for recursion
  *
  * ToDo:
  */
@@ -478,9 +499,11 @@ void searchAux(tree *lookupTree, tree *ret, node *x, void *key)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: inOrder
+ * Input:tree, void pointer
+ * Output:none
+ *
+ * Performs an inorder traversal of provided key and prints it to specified file pointer
  *
  * ToDo:
  */
@@ -490,9 +513,11 @@ void inOrder(tree *Tree, void *outSel)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: inOderAux
+ * Input:tree, void pointer
+ * Output:none
+ *
+ * Auxillary function to inOrder
  *
  * ToDo:
  */
@@ -508,9 +533,11 @@ void inOrderAux(tree *Tree, node *x, void *outSel)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: inOrderScreen
+ * Input: tree
+ * Output:none
+ *
+ * Performs inorder traversal of tree and prints to screen using ncurses
  *
  * ToDo:
  */
@@ -520,9 +547,11 @@ void inOrderScreen(tree *Tree)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: inOrderScreenAux
+ * Input: tree, node
+ * Output: none
+ *
+ * Auxillary function to inOrderScreen for recursion
  *
  * ToDo:
  */
@@ -537,9 +566,11 @@ void inOrderAuxScreen(tree *Tree, node *x)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: toLL
+ * Input: tree
+ * Output: linkedlist
+ *
+ * Inserts tree entries in order into a new linkedlist and returns a pointer to it
  *
  * ToDo:
  */
@@ -552,9 +583,11 @@ LL * toLL(tree *Tree)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: toLLAux
+ * Input:tree, node, linkedlist
+ * Output:none
+ *
+ * Auxillary function for toLL for recursion
  *
  * ToDo:
  */
@@ -571,9 +604,12 @@ void toLLAux(tree *Tree, node *x, LL *ret)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: toLLLog
+ * Input: tree
+ * Output: LinkedList pointer
+ *
+ * Inserts tree entries in order into a new linkedlist and returns a pointer to it
+ *
  *
  * ToDo:
  */
@@ -586,9 +622,11 @@ LL * toLLLog(tree *Tree)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function:toLLLogAux
+ * Input:tree, node, linked list
+ * Output:none
+ *
+ * Auxillary function to toLLLogAux for recursion
  *
  * ToDo:
  */
@@ -604,11 +642,32 @@ void toLLLogAux(tree *Tree, node *x, LL *ret)
 	toLLLogAux(Tree, x->right, ret);
 }
 
+/*
+ * Function: exactSearch
+ * Input:tree, node
+ * Output:none
+ *
+ * searches for an exact match between the provided node and all nodes in tree
+ * Returns found node or Tree->nil if not found
+ *
+ * ToDo:
+ */
 node * exactSearch(tree *Tree, node *x)
 {
 	return exactSearchAux(Tree, Tree->root, x);
 }
 
+/*
+ * Function: exactSearchAux
+ * Input:tree, node, node
+ * Output:none
+ *
+ * Auxillary function to exactSearch for recursion
+ * searches for an exact match between the provided node and all nodes in tree
+ * Returns found node or Tree->nil if not found
+ *
+ * ToDo:
+ */
 node * exactSearchAux(tree *Tree, node *next, node *search)
 {
 	if((next == Tree->nil) || (strcmp(((MovieLog*)next->key)->title,((MovieLog*)search->key)->title) == 0))

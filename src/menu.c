@@ -12,9 +12,11 @@
  */
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: printStart
+ * Input:none
+ * Output:none
+ *
+ * Displays opening message
  *
  * ToDo:
  */
@@ -26,44 +28,61 @@ void printStart()
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: retrieveMenuOption
+ * Input:None
+ * Output:Integer to determine next menu
+ *
+ * Displays menu options and returns integer to move to desired menu
  *
  * ToDo:
  */
-void retrieveMenuOption(char *menuChoice)
+int retrieveMenuOption()
 {
 	clear();
 	printw("MAIN MENU\nPlease select an option below.\n(1) Select an existing log file\n(2) Create a new log file\n(3) Exit application\n");
 	refresh();
+	char menuChoice[2] = "";
 	getnstr(menuChoice,1);
 
 	while(!(((strcmp("1",menuChoice)) == 0) | ((strcmp("2",menuChoice)) == 0) | ((strcmp("3",menuChoice)) == 0)))
 	{
-		menuChoice = strdup("");
 		clear();
 		printw("MAIN MENU\nPlease select a correct option below. *note: Only a single digit(1, 2, or 3) is considered valid input\n(1) Select an existing log file\n(2) Create a new log file\n(3) Exit application\n");
 		refresh();
 		getnstr(menuChoice,1);
 	}
+
+	return atoi(menuChoice);
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: printNewLogMenu
+ * Input: lookup tree
+ * Output: integer to determine next menu
+ *
+ * Allows user to create a new log file and add a new entry.
+ * Returns an integer to determine next menu state
  *
  * ToDo:
  */
-void printNewLogMenu(char *menuChoice, tree *lookupTree)
+int printNewLogMenu(tree *lookupTree)
 {
 	clear();
 	printw("NEW LOG MENU\nPlease enter a name for the file(Less than 50 characters)\n");
 	refresh();
-	char fName[54] = "";
-	getstr(fName);
+	char fName[50] = "";
+	getnstr(fName,50);
 	strcat(fName,".log");
+
+	while(ifExists(fName))
+	{
+		clear();
+		printw("NEW LOG MENU\nThat file already exists, please enter a new file name\n");
+		refresh();
+		getnstr(fName,50);
+		strcat(fName,".log");
+	}
+
 	clear();
 	printw("NEW LOG MENU\nPlease enter the title you want to search for.\n");
 	refresh();
@@ -74,21 +93,46 @@ void printNewLogMenu(char *menuChoice, tree *lookupTree)
 	searchAdd(searchTerm, lookupTree, fName, temp);
 
 	clear();
-	printw("Log file created and entry added successfully! Would you like to continue editing this log? ('y' for yes, 'n' to return to main menu)");
+	printw("Log file created and entry added successfully! Would you like to create another log? ('y' for yes, 'n' to return to main menu)");
 	refresh();
-	getch();
+	char choice[2] = "";
+	getnstr(choice,1);
 
-	getch();
+	while(1)
+	{
+		if((strcmp(choice,"y") == 0))
+		{
+			return 2;
+		}
+		else if((strcmp(choice,"n") == 0))
+		{
+			return 0;
+		}
+		else
+		{
+			clear();
+			printw("Incorrect input, please enter 'y' or 'n'.\nWould you like to continue editing this log? ('y' for yes, 'n' to return to main menu)");
+			refresh();
+			getnstr(choice,1);
+		}
+	}
+
+
+
+//	getch();
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: printExistingLogMenu
+ * Input:lookup tree
+ * Output:integer
+ *
+ * Displays the available options for an existing log.
+ * Returns an integer to choose next menu choice
  *
  * ToDo:
  */
-void printExistingLogMenu(char *menuChoice, tree *lookupTree)
+int printExistingLogMenu(tree *lookupTree)
 {
 	clear();
 	printw("EXISTING LOG MENU\nPlease enter the name of the user file you want to modify.\n");
@@ -97,6 +141,15 @@ void printExistingLogMenu(char *menuChoice, tree *lookupTree)
 	getstr(fName);
 	strcat(fName,".log");
 	clear();
+
+	while(!ifExists(fName))
+	{
+		clear();
+		printw("EXISTING LOG MENU\nThat file does not exists, please enter a new file name\n");
+		refresh();
+		getnstr(fName,50);
+		strcat(fName,".log");
+	}
 
 	tree *userTreeTitle = importLogFile(fName);
 
@@ -112,7 +165,7 @@ void printExistingLogMenu(char *menuChoice, tree *lookupTree)
 
 		if(selectMode == 0)
 		{
-			break;
+			return 0;
 		}
 		else if(selectMode == 1)
 		{
@@ -122,41 +175,59 @@ void printExistingLogMenu(char *menuChoice, tree *lookupTree)
 		else if(selectMode == 2)
 		{
 			clear();
-			printw("EXISTING LOG MENU\nPlease enter the title you want to search for.\n");
+			printw("EXISTING LOG MENU -- Add Entry\nPlease enter the title you want to search for.\n");
 			refresh();
 			char searchTerm[300] = "";
-			getstr(searchTerm);
+			getnstr(searchTerm,300);
 
 			searchAdd(searchTerm, lookupTree, fName, userTreeTitle);
 
 			clear();
-			printw("\nChoose which operation to perform next.\n(1)\tView this log\n(2)\tModify an existing entry in this log\n");
+			printw("EXISTING LOG MENU -- Add Entry\nEntry successfully added.\nChoose which operation to perform next.\n(1)\tView this log\n(2)\tModify an existing entry in this log\n(3)\tAdd another entry to this log\n(4)\tReturn to main menu\n");
 			refresh();
-			char tempSel[10] = "";
-			getstr(tempSel);
-			int selectModeTemp = atoi(tempSel);
-			if(selectModeTemp == 1)
+			char select[2] = "";
+			getnstr(select,1);
+
+			while(1)
 			{
-				selectMode = 1;
-			}
-			else if(selectModeTemp == 2)
-			{
-				selectMode = 3;
-			}
-			else
-			{
-				selectMode = 0;
+				int selectM = atoi(select);
+				if(selectM == 1)
+				{
+					selectMode = 1;
+					break;
+				}
+				else if(selectM == 2)
+				{
+					selectMode = 3;
+					break;
+				}
+				else if(selectM == 3)
+				{
+					selectMode = 2;
+					break;
+				}
+				else if(selectM == 4)
+				{
+					selectMode = 0;
+					break;
+				}
+				else
+				{
+					printw("Invalid Option.\nChoose which operation to perform next.\n(1)\tView this log\n(2)\tModify an existing entry in this log\n(3)\tAdd another entry to this log\n(4)\tReturn to main menu\n");
+					refresh();
+					getnstr(select,1);
+				}
 			}
 		}
 		else if(selectMode == 3)
 		{
 			clear();
-			printw("EXISTING LOG MENU\nPlease enter the title you want to search for to modify.\n");
+			printw("EXISTING LOG MENU -- Modify Entry\nPlease enter the title you want to search for to modify.\n");
 			refresh();
 			char searchTerm[300] = "";
 			getstr(searchTerm);
 
-			modifyLogMenu(userTreeTitle, searchTerm, fName);
+			selectMode = modifyLogMenu(userTreeTitle, searchTerm, fName);
 		}
 		else
 		{
@@ -175,30 +246,69 @@ void printExistingLogMenu(char *menuChoice, tree *lookupTree)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: searchAdd
+ * Input: char pointer to search title, search tree , filename, and tree to modify
+ * Output: N/A
+ *
+ * Searches for and adds entry to user tree with desired media types and date
+ *
  *
  * ToDo:
  */
 void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 {
-	MovieEntry *x = newMovieEntry("", "",searchTerm, "", 0, 0, 0, 0, "");
-	tree *results = search(lookupTree, x);
+	MovieEntry *x;
+	tree *results;
+	LL *resultsLL;
 
+//	if(!(strcmp(searchTerm,"") == 0))
+	//{
+	x = newMovieEntry("", "",searchTerm, "", 0, 0, 0, 0, "");
+	results = search(lookupTree, x);
+	resultsLL = toLL(results);
+	//}
 
-	while(results->root == results->nil)
+//	char searchT[300] = "";
+
+	while(1)
 	{
-		clear();
-		printw("No results found for that search, please refine your search. Enter the title you want to search for.\n");
-		refresh();
-		char searchT[300] = "";
-		getstr(searchT);
-		x = newMovieEntry("", "",searchT, "", 0, 0, 0, 0, "");
-		results = search(lookupTree, x);
+		/*
+		if((strcmp(searchT,"") == 0))
+		{
+			clear();
+			printw("No results found for that search, please refine your search. Enter the title you want to search for.\n");
+			refresh();
+//			searchT[300] = "";
+			getnstr(searchT,300);
+		}
+		*/
+		if((results->root == results->nil))
+		{
+			clear();
+			printw("No results found for that search, please refine your search. Enter the title you want to search for.\n");
+			refresh();
+			char searchT[300] = "";
+			getnstr(searchT,300);
+			x = newMovieEntry("", "",searchT, "", 0, 0, 0, 0, "");
+			results = search(lookupTree, x);
+			resultsLL = toLL(results);
+		}
+		else if(resultsLL->size > 20)
+		{
+			clear();
+			printw("Too many results found for that search, please refine your search. Enter the title you want to search for.\n");
+			refresh();
+			char searchT[300] = "";
+			getnstr(searchT,300);
+			x = newMovieEntry("", "",searchT, "", 0, 0, 0, 0, "");
+			results = search(lookupTree, x);
+			resultsLL = toLL(results);
+		}
+		else
+		{
+			break;
+		}
 	}
-
-	LL *resultsLL = toLL(results);
 
 
 	clear();
@@ -210,10 +320,10 @@ void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 	MovieLog *add = getLog(resultsLL,atoi(sel));
 
 	int media = 0;
-	while((media < 1) || (media > 6))
+	while((media < 1) || (media > 3))
 	{
 		clear();
-		printw("Please select the media option you wish to modify.\n(1)\tAdd DVD\n(2)\tRemove DVD\n(3)\tAdd BluRay\n(4)\tRemove BluRay\n(5)\tAdd Digital\n(6)\tRemove Digital\n");
+		printw("Please select the media option you wish to add.\n(1)\tAdd DVD\n(2)\tAdd BluRay\n(3)\tAdd Digital\n");
 		refresh();
 		char mediaChoice[10] = "";
 		getstr(mediaChoice);
@@ -225,23 +335,11 @@ void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 		}
 		else if(media == 2)
 		{
-			removeDvd(add);
+			addBluray(add);
 		}
 		else if(media == 3)
 		{
-			addBluray(add);
-		}
-		else if(media == 4)
-		{
-			removeBluray(add);
-		}
-		else if(media == 5)
-		{
 			addDigital(add);
-		}
-		else if(media == 6)
-		{
-			removeDigital(add);
 		}
 	}
 
@@ -249,7 +347,7 @@ void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 	printw("Please enter the date that this media was added to your collection. (Format: 03-19-2019)\n");
 	refresh();
 	char date[10] = "";
-	getstr(date);
+	getnstr(date,10);
 	changeDate(add,date);
 
 	insert(temp,newNode(add));
@@ -260,30 +358,51 @@ void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: modifyLogMenu
+ * Input: red black tree of user log, char pointer to search title, char pointer to filename
+ * Output:integer to determine next menu
+ *
+ * Allows the user to search for an entry in the user log and modify it.
+ * Returns an int that determines next menu
  *
  * ToDo:
  */
-void modifyLogMenu(tree *userTree, char *searchTerm, char *fName)
+int modifyLogMenu(tree *userTree, char *searchTerm, char *fName)
 {
 	MovieLog *x = newMovieLogSearch(searchTerm);
 	tree *results = search(userTree, x);
+	LL *resultsLL = toLLLog(results);
 
-
-	while(results->root == results->nil)
+	while(1)
 	{
-		clear();
-		printw("No results found for that search, please refine your search. Enter the title you want to search for.\n");
-		refresh();
-		char searchT[300] = "";
-		getstr(searchT);
-		x = newMovieLogSearch(searchT);
-		results = search(userTree, x);
+		if((results->root == results->nil))
+		{
+			clear();
+			printw("No results found for that search, please refine your search. Enter the title you want to search for.\n");
+			refresh();
+			char searchT[300] = "";
+			getnstr(searchT,300);
+			x = newMovieLogSearch(searchT);
+			results = search(userTree, x);
+			resultsLL = toLLLog(results);
+		}
+		else if(resultsLL->size > 20)
+		{
+			clear();
+			printw("Too many results found for that search, please refine your search. Enter the title you want to search for.\n");
+			refresh();
+			char searchT[300] = "";
+			getnstr(searchT,300);
+			x = newMovieLogSearch(searchT);
+			results = search(userTree, x);
+			resultsLL = toLLLog(results);
+		}
+		else
+		{
+			break;
+		}
 	}
 
-	LL *resultsLL = toLLLog(results);
 
 
 	clear();
@@ -333,21 +452,66 @@ void modifyLogMenu(tree *userTree, char *searchTerm, char *fName)
 		}
 	}
 
-	clear();
-	printw("Please enter the date that this media was added to your collection. (Format: 03-19-2019)\n");
-	refresh();
-	char date[10] = "";
-	getstr(date);
-	changeDate(((MovieLog*)retNode),date);
+	if((((MovieLog*)retNode->key)->dvd == 0) && (((MovieLog*)retNode->key)->bluray == 0) && (((MovieLog*)retNode->key)->digital == 0))
+	{
+		rbDelete(userTree,retNode);
+		printw("All media was removed, the entry has been deleted\n");
+		refresh();
+	}
+	else
+	{
+		clear();
+		printw("Please enter the date that this media was added to your collection. (Format: 03-19-2019)\n");
+		refresh();
+		char date[10] = "";
+		getstr(date);
+		changeDate(((MovieLog*)retNode),date);
+	}
 
-//	insert(temp,newNode(add));
+
+
 	exportLogFile(userTree,fName);
+
+	printw("\nChoose which operation to perform next.\n(1)\tAdd a new entry to this log\n(2)\tView the contents of this log\n(3)\tModify another log\n(4)\tReturn to main menu\n");
+	refresh();
+	char select[2] = "";
+	getnstr(select,1);
+
+	while(1)
+	{
+		int selectMode = atoi(select);
+		if(selectMode == 1)
+		{
+			return 2;
+		}
+		else if(selectMode == 2)
+		{
+			return 1;
+		}
+		else if(selectMode == 3)
+		{
+			return 3;
+		}
+		else if(selectMode == 4)
+		{
+			return 0;
+		}
+		else
+		{
+			printw("Invalid Option.\nChoose which operation to perform next.\n(1)\tAdd a new entry to this log\n(2)\tModify an existing entry in this log\n(3)\tReturn to main menu\n");
+			refresh();
+			getnstr(select,1);
+		}
+	}
+
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: displayLogMenu
+ * Input: red black tree
+ * Output: int
+ *
+ * Displays a menu to list the entries inside a user log. Returns an int that determines next menu to go to.
  *
  * ToDo:
  */
@@ -355,24 +519,35 @@ int displayLogMenu(tree *userTree)
 {
 	clear();
 	inOrderScreen(userTree);
-	printw("\nChoose which operation to perform next.\n(1)\tAdd a new entry to this log\n(2)\tModify an existing entry in this log\n");
+	printw("\nChoose which operation to perform next.\n(1)\tAdd a new entry to this log\n(2)\tModify an existing entry in this log\n(3)\tReturn to main menu\n");
 	refresh();
-	char sel[10] = "";
-	getstr(sel);
-	int selectMode = atoi(sel);
-	if(selectMode == 1)
-	{
-		return 2;
-	}
-	else if(selectMode == 2)
-	{
-		return 3;
-	}
-	else
-	{
-		return 0;
-	}
+	char sel[2] = "";
+	getnstr(sel,1);
 
+
+
+	while(1)
+	{
+		int selectMode = atoi(sel);
+		if(selectMode == 1)
+		{
+			return 2;
+		}
+		else if(selectMode == 2)
+		{
+			return 3;
+		}
+		else if(selectMode == 3)
+		{
+			return 0;
+		}
+		else
+		{
+			printw("Invalid Option.\nChoose which operation to perform next.\n(1)\tAdd a new entry to this log\n(2)\tModify an existing entry in this log\n(3)\tReturn to main menu\n");
+			refresh();
+			getnstr(sel,1);
+		}
+	}
 
 
 	return 0;

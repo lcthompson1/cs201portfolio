@@ -21,5 +21,6 @@
 MovieLog * readLogEntry(char *line);
 tree * importLogFile(char *fname);
 void exportLogFile(tree *Tree, char *fname);
+int ifExists(const char *fName);
 
 #endif

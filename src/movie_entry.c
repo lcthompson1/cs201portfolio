@@ -42,9 +42,11 @@ MovieEntry * newMovieEntry(char *tc, char *tt, char *pt, char *ot, int ia, int s
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: newMovieEntrySearch
+ * Input: char pointer to title
+ * Output: MovieEntry pointer
+ *
+ * Creates and returns a pointer to a MovieEntry structure containing the desired title to be used for searching only
  *
  * ToDo:
  */
@@ -66,9 +68,11 @@ MovieEntry * newMovieEntrySearch(char *title)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: toLowerString
+ * Input:char pointer
+ * Output:char pointer
+ *
+ * Returns a lowercase version of the char pointer passed to it for accurate searching
  *
  * ToDo:
  */
@@ -85,9 +89,12 @@ char * toLowerString(char *string)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: titleLessThan
+ * Input: two void pointers
+ * Output: integer
+ *
+ * Compares two MovieEntry titles to determine if the first is less than the second
+ * Returns 1 if true, 0 otherwise
  *
  * ToDo:
  */
@@ -106,9 +113,12 @@ int titleLessThan(void *x, void *y)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: titleGreaterThan
+ * Input:two void pointers
+ * Output:integer
+ *
+ * Compares two MovieEntry titles to determine if the first is greater than the second
+ * Returns 1 if true, 0 otherwise
  *
  * ToDo:
  */
@@ -125,9 +135,12 @@ int titleGreaterThan(void *x, void *y)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: titleEqualTo
+ * Input: two MovieEntry pointers
+ * Output: integer
+ *
+ * Compares two MovieEntry titles to determine if they are equivalent
+ * Returns 1 if true, 0 otherwise
  *
  * ToDo:
  */
@@ -145,9 +158,11 @@ int titleEqualTo(MovieEntry *x, MovieEntry *y)
 
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: printMovieEntry
+ * Input:two void pointer
+ * Output:none
+ *
+ * prints the MovieEntry passed to it into a file pointer passed to it
  *
  * ToDo:
  */
@@ -157,9 +172,11 @@ void printMovieEntry(void *x, void *outSel)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function:printMoveEntryScreen
+ * Input:void pointer
+ * Output:none
+ *
+ * Display the MovieEntry passed to it onto the screen using ncurses
  *
  * ToDo:
  */
@@ -169,9 +186,12 @@ void printMovieEntryScreen(void *x)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function:begMatchAux
+ * Input:two char pointers
+ * Output: integer
+ *
+ * Compares two strings to see if the first is a substring of the first
+ * Returns 1 if true, 0 otherwise
  *
  * ToDo:
  */
@@ -199,9 +219,11 @@ int begMatchAux(const char *searchTerm, const char *full)
 }
 
 /*
- * Function:
- * Input:
- * Output:
+ * Function: begMatch
+ * Input:two void pointers
+ * Output:int
+ *
+ * Uses begMatchAux to compare two strings to determine if the first is a substring of the second
  *
  * ToDo:
  */
