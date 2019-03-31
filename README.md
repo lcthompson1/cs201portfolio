@@ -8,7 +8,7 @@ To set up this program initially, all one needs to do is run "./setup" in a term
 
 If permission errors are thrown, the script can be made executable by running "chmod 755 setup"
 
-### Prerequisites
+## Prerequisites
 
 This project will require gcc and ncurses libraries to be installed for compilation
 
@@ -26,7 +26,7 @@ The data structure used for both the lookup database and user log is a red black
 ##Links
 * [GitHub link]((https://github.com/lcthompson1)
 * [tsv file](https://datasets.imdbws.com/title.basics.tsv.gz)
-* [Video Demonstration](https://youtu.be/ypVtPuY7TtU)
+* [Video Demonstration](https://youtu.be/Y9M0fxnXO7g)
 
 ## Authors
 

@@ -468,6 +468,17 @@ tree * search(tree *Tree, void *key, void *a, void *the)
 
 }
 
+tree * searchLog(tree *Tree, void *key)
+{
+	tree *ret = newTree(Tree->begMatch,Tree->print, Tree->titleLessThan, Tree->titleGreaterThan, Tree->printScreen);
+
+	searchAux(Tree,ret,Tree->root,key);
+
+
+
+	return ret;
+}
+
 /*
  * Function: searchAux
  * Input:tree, tree, node ,void pointer
@@ -532,7 +543,6 @@ void inOrderAux(tree *Tree, node *x, void *outSel)
 		return;
 
 	inOrderAux(Tree, x->left, (FILE*)(outSel));
-//	printMovieEntry(x->key);
 	Tree->print(x->key, outSel);
 	inOrderAux(Tree, x->right, (FILE*)(outSel));
 }
@@ -675,23 +685,37 @@ node * exactSearch(tree *Tree, node *x)
  */
 node * exactSearchAux(tree *Tree, node *next, node *search)
 {
-	if((next == Tree->nil) || (strcmp(((MovieLog*)next->key)->title,((MovieLog*)search->key)->title) == 0))
+
+	if((next == Tree->nil) || begLogMatch(next, search))
 	{
 		return next;
 	}
 
-
-	if((strcmp(((MovieLog*)next->key)->title,((MovieLog*)search->key)->title) > 0))
+	if((Tree->titleGreaterThan(next->key ,search->key)))
 	{
 		return exactSearchAux(Tree,next->left,search);
 	}
-
+	else
+	{
 		return exactSearchAux(Tree,next->right,search);
+	}
 }
 
+void deleteTree(tree *Tree)
+{
+	deleteTreeAux(Tree,Tree->root);
+	free(Tree);
+}
 
+void deleteTreeAux(tree *Tree, node *Node)
+{
+	if(Node == Tree->nil)
+		return;
 
-
+	deleteTreeAux(Tree,Node->left);
+	deleteTreeAux(Tree,Node->right);
+	free(Node);
+}
 
 
 

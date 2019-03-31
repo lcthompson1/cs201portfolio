@@ -90,11 +90,11 @@ void printLL(LL *list)
 {
 	int current = 1;
 	LLNode *x = list->tail;
-	printw("%-50.47s   %-15s   %-10s   %-25s   %-9s   %-12s   %-13s   %-10s\n","Title","Release Year","Runtime","Genres","On DVD","On BluRay","On Digital","Date");
+	printw("   \t%-50.47s   %-15s   %-10s   %-25s   %-9s   %-12s   %-13s   %-10s\n","Title","Release Year","Runtime","Genres","On DVD","On BluRay","On Digital","Date");
 
 	while(x != NULL)
 	{
-		printw("%d)\t",current);
+		printw("%3d)\t",current);
 		printMovieLogScreen(x->data);
 		x = x->prev;
 		current++;
@@ -106,7 +106,7 @@ void printLL(LL *list)
  * Input: LinkedList pointer, selection integer
  * Output: MovieLog pointer
  *
- * Uses selection integer to retrieve te desired MovieLog entry
+ * Uses selection integer to retrieve the desired MovieLog entry
  *
  * ToDo: Nothing
  */
@@ -122,4 +122,21 @@ MovieLog * getLog(LL *list, int sel)
 	}
 
 	return y->data;
+}
+
+void deleteLL(LL *list)
+{
+	LLNode *cur = list->tail;
+	LLNode *next;
+
+	while(cur != NULL)
+	{
+		next = cur->prev;
+		free(cur);
+		cur = next;
+	}
+
+	list->head = NULL;
+	list->tail = NULL;
+	free(list);
 }

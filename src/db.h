@@ -75,5 +75,8 @@ node * exactSearch(tree *Tree, node *x);
 node * exactSearchAux(tree *Tree, node *next, node *search);
 LL * toLLLog(tree *Tree);
 void toLLLogAux(tree *Tree, node *x, LL *ret);
+void deleteTree(tree *Tree);
+void deleteTreeAux(tree *Tree, node *Node);
+tree * searchLog(tree *Tree, void *key);
 
 #endif

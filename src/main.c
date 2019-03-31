@@ -43,6 +43,7 @@ int main()
 	}
 
 	endwin();
+	deleteTree(lookupTree);
 
 	return 1;
 }

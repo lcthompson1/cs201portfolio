@@ -46,6 +46,6 @@ LLNode * newLLNode(MovieLog *data);
 void insertLL(LL *list, LLNode *x);
 void printLL(LL *list);
 MovieLog * getLog(LL *list, int sel);
-
+void deleteLL(LL *list);
 
 #endif

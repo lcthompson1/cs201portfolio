@@ -25,15 +25,16 @@
 MovieLog * readUserLogEntry(char *line)
 {
 	char *title = strtok(line,"\t");
-	char *genres = strtok(NULL,"\t");
-	char *runtime = strtok(NULL,"\t");
 	char *releaseYear = strtok(NULL,"\t");
+	char *runtime = strtok(NULL,"\t");
+	char *genres = strtok(NULL,"\t");
 	char *dvd = strtok(NULL,"\t");
 	char *bluray = strtok(NULL,"\t");
 	char *digital = strtok(NULL,"\t");
 	char *date = strtok(NULL,"\t");
 
-
+	if(date[strlen(date)-1] == '\n')
+			date[strlen(date)-1] = 0;
 
 	MovieLog *ret = newMovieLogFile(title, atoi(releaseYear), atoi(runtime), genres, atoi(dvd), atoi(bluray), atoi(digital), date);
 	return ret;
@@ -80,6 +81,9 @@ tree * importLogFile(char *fname)
  */
 void exportLogFile(tree *Tree, char *fname)
 {
+	if(ifExists(fname))
+			remove(fname);
+
 	FILE *fp;
 
 	fp = fopen(fname,"w");
