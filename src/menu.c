@@ -183,7 +183,7 @@ int printExistingLogMenu(tree *lookupTree)
 			searchAdd(searchTerm, lookupTree, fName, userTreeTitle);
 
 			clear();
-			printw("EXISTING LOG MENU -- Add Entry\nEntry successfully added.\nChoose which operation to perform next.\n(1)\tView this log\n(2)\tModify an existing entry in this log\n(3)\tAdd another entry to this log\n(4)\tReturn to main menu\n");
+			printw("EXISTING LOG MENU -- Add Entry\nChoose which operation to perform next.\n(1)\tView this log\n(2)\tModify an existing entry in this log\n(3)\tAdd another entry to this log\n(4)\tReturn to main menu\n");
 			refresh();
 			char select[2] = "";
 			getnstr(select,1);
@@ -257,31 +257,19 @@ int printExistingLogMenu(tree *lookupTree)
  */
 void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 {
-	MovieEntry *x;
-	tree *results;
-	LL *resultsLL;
+	char a[300] = "a ";
+	char the[300] = "the ";
+	strcat(a,searchTerm);
+	strcat(the,searchTerm);
 
-//	if(!(strcmp(searchTerm,"") == 0))
-	//{
-	x = newMovieEntry("", "",searchTerm, "", 0, 0, 0, 0, "");
-	results = search(lookupTree, x);
-	resultsLL = toLL(results);
-	//}
-
-//	char searchT[300] = "";
+	MovieEntry *x = newMovieEntry("", "",a, "", 0, 0, 0, 0, "");
+	MovieEntry *y = newMovieEntry("", "",the, "", 0, 0, 0, 0, "");
+	MovieEntry *z = newMovieEntry("", "",searchTerm, "", 0, 0, 0, 0, "");
+	tree *results = search(lookupTree, z, x, y);
+	LL *resultsLL = toLL(results);
 
 	while(1)
 	{
-		/*
-		if((strcmp(searchT,"") == 0))
-		{
-			clear();
-			printw("No results found for that search, please refine your search. Enter the title you want to search for.\n");
-			refresh();
-//			searchT[300] = "";
-			getnstr(searchT,300);
-		}
-		*/
 		if((results->root == results->nil))
 		{
 			clear();
@@ -289,8 +277,15 @@ void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 			refresh();
 			char searchT[300] = "";
 			getnstr(searchT,300);
-			x = newMovieEntry("", "",searchT, "", 0, 0, 0, 0, "");
-			results = search(lookupTree, x);
+			char a1[300] = "a ";
+			char the1[300] = "the ";
+			strcat(a1,searchT);
+			strcat(the1,searchT);
+
+			x = newMovieEntry("", "",a1, "", 0, 0, 0, 0, "");
+			y = newMovieEntry("", "",the1, "", 0, 0, 0, 0, "");
+			z = newMovieEntry("", "",searchT, "", 0, 0, 0, 0, "");
+			results = search(lookupTree, z, x, y);
 			resultsLL = toLL(results);
 		}
 		else if(resultsLL->size > 20)
@@ -300,8 +295,15 @@ void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 			refresh();
 			char searchT[300] = "";
 			getnstr(searchT,300);
-			x = newMovieEntry("", "",searchT, "", 0, 0, 0, 0, "");
-			results = search(lookupTree, x);
+			char a1[300] = "a ";
+			char the1[300] = "the ";
+			strcat(a1,searchT);
+			strcat(the1,searchT);
+
+			x = newMovieEntry("", "",a1, "", 0, 0, 0, 0, "");
+			y = newMovieEntry("", "",the1, "", 0, 0, 0, 0, "");
+			z = newMovieEntry("", "",searchT, "", 0, 0, 0, 0, "");
+			results = search(lookupTree, z, x, y);
 			resultsLL = toLL(results);
 		}
 		else
@@ -310,14 +312,22 @@ void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 		}
 	}
 
-
 	clear();
 	printw("Please select the number of the movie you want to add.\n");
 	printLL(resultsLL);
 	refresh();
-	char sel[10] = "";
-	getstr(sel);
+	char sel[2] = "";
+	getnstr(sel,2);
 	MovieLog *add = getLog(resultsLL,atoi(sel));
+
+	node *existing = exactSearch(temp,newNode(add));
+
+	if(exactSearch(temp,existing) != temp->nil)
+	{
+		printw("Entry already exists in user log, returning to menu.\n");
+		refresh();
+		return;
+	}
 
 	int media = 0;
 	while((media < 1) || (media > 3))
@@ -353,6 +363,8 @@ void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
 	insert(temp,newNode(add));
 	exportLogFile(temp,fName);
 
+	printw("Entry successfully added.\n");
+	refresh();
 
 
 }
@@ -369,8 +381,16 @@ void searchAdd(char *searchTerm, tree *lookupTree, char *fName, tree *temp)
  */
 int modifyLogMenu(tree *userTree, char *searchTerm, char *fName)
 {
-	MovieLog *x = newMovieLogSearch(searchTerm);
-	tree *results = search(userTree, x);
+
+	char a[300] = "a ";
+	char the[300] = "the ";
+	strcat(a,searchTerm);
+	strcat(the,searchTerm);
+
+	MovieLog *x = newMovieLogSearch(a);
+	MovieLog *y = newMovieLogSearch(the);
+	MovieLog *z = newMovieLogSearch(searchTerm);
+	tree *results = search(userTree, z, x, y);
 	LL *resultsLL = toLLLog(results);
 
 	while(1)
@@ -382,8 +402,15 @@ int modifyLogMenu(tree *userTree, char *searchTerm, char *fName)
 			refresh();
 			char searchT[300] = "";
 			getnstr(searchT,300);
-			x = newMovieLogSearch(searchT);
-			results = search(userTree, x);
+
+			char a1[300] = "a ";
+			char the1[300] = "the ";
+			strcat(a1,searchT);
+			strcat(the1,searchT);
+			x = newMovieLogSearch(a1);
+			y = newMovieLogSearch(the1);
+			z = newMovieLogSearch(searchT);
+			results = search(userTree, z, x, y);
 			resultsLL = toLLLog(results);
 		}
 		else if(resultsLL->size > 20)
@@ -393,8 +420,17 @@ int modifyLogMenu(tree *userTree, char *searchTerm, char *fName)
 			refresh();
 			char searchT[300] = "";
 			getnstr(searchT,300);
-			x = newMovieLogSearch(searchT);
-			results = search(userTree, x);
+
+
+			char a1[300] = "a ";
+			char the1[300] = "the ";
+			strcat(a1,searchT);
+			strcat(the1,searchT);
+
+			x = newMovieLogSearch(a1);
+			y = newMovieLogSearch(the1);
+			z = newMovieLogSearch(searchT);
+			results = search(userTree, z, x, y);
 			resultsLL = toLLLog(results);
 		}
 		else
@@ -518,6 +554,7 @@ int modifyLogMenu(tree *userTree, char *searchTerm, char *fName)
 int displayLogMenu(tree *userTree)
 {
 	clear();
+	printw("%-50s%-12s%-7s%-25s%-6s%-9s%-10s%-10s\n","Title","Release Year","Runtime","Genres","On DVD","On BluRay","On Digital","Date");
 	inOrderScreen(userTree);
 	printw("\nChoose which operation to perform next.\n(1)\tAdd a new entry to this log\n(2)\tModify an existing entry in this log\n(3)\tReturn to main menu\n");
 	refresh();

@@ -67,7 +67,7 @@ void inOrder(tree *Tree, void *outSel);
 void inOrderAux(tree *Tree, node *x, void *outSel);
 void inOrderScreen(tree *Tree);
 void inOrderAuxScreen(tree *Tree, node *x);
-tree * search(tree *Tree, void *key);
+tree * search(tree *Tree, void *key, void *a, void *the);
 void searchAux(tree *Tree,tree *ret, node *x, void *key);
 LL * toLL(tree *Tree);
 void toLLAux(tree *Tree, node *x, LL *ret);

@@ -90,7 +90,7 @@ void printLL(LL *list)
 {
 	int current = 1;
 	LLNode *x = list->tail;
-	printw("%-50s%-12s%-7s%-25s%-6s%-9s%-10s%-10s\n","Title","Release Year","Runtime","Genres","On DVD","On BluRay","On Digital","Date");
+	printw("%-50.47s   %-15s   %-10s   %-25s   %-9s   %-12s   %-13s   %-10s\n","Title","Release Year","Runtime","Genres","On DVD","On BluRay","On Digital","Date");
 
 	while(x != NULL)
 	{

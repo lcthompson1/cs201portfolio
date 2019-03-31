@@ -16,6 +16,8 @@ This project will require gcc and ncurses libraries to be installed for compilat
 
 Upon launch, this program will notify that the database is being loaded and will notify when it is completed. It will then display a main menu allowing you to choose to either exit the program, create a new log file, or edit an existing file.The create a new log menu will allow you to choose a file name, search for a movie to add, and allow you to edit the media type and date. Upon completion, you can either create another new log, or return to te new main menu. The existing log menu will allow you to add a new entry, modify an existing entry, display the user log, or return to te main menu.
 
+When searching for titles, the search entry must be what the title begins with, not what it contains.
+
 
 ##Notes
 

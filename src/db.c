@@ -340,6 +340,7 @@ void rbDelete(tree *Tree, node *z)
 	{
 		rbDeleteFixup(Tree, x);
 	}
+	free(z);
 }
 
 
@@ -453,10 +454,14 @@ void rbDeleteFixup(tree *Tree, node *x)
  *
  * ToDo:
  */
-tree * search(tree *Tree, void *key)
+tree * search(tree *Tree, void *key, void *a, void *the)
 {
 	tree *ret = newTree(Tree->begMatch,Tree->print, Tree->titleLessThan, Tree->titleGreaterThan, Tree->printScreen);
+
+	searchAux(Tree, ret, Tree->root,a);
 	searchAux(Tree,ret,Tree->root,key);
+	searchAux(Tree, ret, Tree->root,the);
+
 
 	return ret;
 

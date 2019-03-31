@@ -182,7 +182,7 @@ void printMovieLog(void *x, void *outSel)
  */
 void printMovieLogScreen(void *x)
 {
-	printw("%-50s%-12d%-7d%-25s%-6d%-9d%-10d%-10s\n",((MovieLog*)x)->title,((MovieLog*)x)->releaseYear,((MovieLog*)x)->runtime,((MovieLog*)x)->genres,((MovieLog*)x)->dvd,((MovieLog*)x)->bluray,((MovieLog*)x)->digital,((MovieLog*)x)->date);
+	printw("%-50.47s   %-15d   %-10d   %-25s   %-9d   %-12d   %-13d   %-10s\n",((MovieLog*)x)->title,((MovieLog*)x)->releaseYear,((MovieLog*)x)->runtime,((MovieLog*)x)->genres,((MovieLog*)x)->dvd,((MovieLog*)x)->bluray,((MovieLog*)x)->digital,((MovieLog*)x)->date);
 //	refresh();
 }
 
